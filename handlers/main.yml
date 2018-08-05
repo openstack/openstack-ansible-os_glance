@@ -82,26 +82,6 @@
     - "Restart glance services"
     - "venv changed"
 
-# Note (odyssey4me):
-# The policy.json file is currently read continually by the services
-# and is not only read on service start. We therefore cannot template
-# directly to the file read by the service because the new policies
-# may not be valid until the service restarts. This is particularly
-# important during a major upgrade. We therefore only put the policy
-# file in place after the service has been stopped.
-#
-- name: Copy new policy file into place
-  copy:
-    src: "/etc/glance/policy.json-{{ glance_venv_tag }}"
-    dest: "/etc/glance/policy.json"
-    owner: "root"
-    group: "{{ glance_system_group_name }}"
-    mode: "0640"
-    remote_src: yes
-  listen:
-    - "Restart glance services"
-    - "venv changed"
-
 - name: Start services
   service:
     name: "{{ item.service_name }}"

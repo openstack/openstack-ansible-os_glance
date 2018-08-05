@@ -88,7 +88,7 @@ filesystem_store_datadir = {{ glance_system_user_home }}/images/
 {% endif %}
 
 {% if 'swift' in glance_available_stores %}
-swift_store_config_file = /etc/glance/glance-swift-store.conf
+swift_store_config_file = {{ glance_etc_dir }}/glance-swift-store.conf
 default_swift_reference = swift1
 swift_store_auth_insecure = {{ glance_swift_store_auth_insecure | bool }}
 swift_store_region = {{ glance_swift_store_region }}

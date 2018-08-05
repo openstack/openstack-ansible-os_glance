@@ -52,22 +52,58 @@
     mode: "0755"
   with_items: "{{ glance_nfs_client }}"
 
+# NOTE(cloudnull): During an upgrade the local directory may exist on a source
+#                  install. If the directory does exist it will need to be
+#                  removed. This is required on source installs because the
+#                  config directory is a link.
+- name: Source config block
+  block:
+    - name: Stat config directory
+      stat:
+        path: "{{ glance_etc_dir }}"
+      register: glance_conf_dir_stat
+
+    - name: Remove the config directory
+      file:
+        path: "{{ glance_etc_dir }}"
+        state: absent
+      when:
+        - glance_conf_dir_stat.stat.isdir is defined and
+          glance_conf_dir_stat.stat.isdir
+  when:
+    - glance_install_method == 'source'
+
 - name: Create glance directories
   file:
-    path: "{{ item.path | realpath }}"
-    state: directory
-    owner: "{{ item.owner | default(glance_system_user_name) }}"
-    group: "{{ item.group | default(glance_system_group_name) }}"
+    path: "{{ item.path | default(omit) }}"
+    src: "{{ item.src | default(omit) }}"
+    dest: "{{ item.dest | default(omit) }}"
+    state: "{{ item.state | default('directory') }}"
+    owner: "{{ item.owner|default(glance_system_user_name) }}"
+    group: "{{ item.group|default(glance_system_group_name) }}"
     mode: "{{ item.mode | default(omit) }}"
+    force: "{{ item.force | default(omit) }}"
   when:
-    - "item.path not in glance_mount_points"
+    - (item.condition | default(true)) | bool
+    - (item.dest | default(item.path)) not in glance_mount_points
   with_items:
     - path: "/openstack"
       mode: "0755"
       owner: "root"
       group: "root"
-    - path: "/etc/glance"
-      mode: "0750"
+    - path: "{{ (glance_install_method == 'distro') | ternary(glance_etc_dir, (glance_bin | dirname) + glance_etc_dir) }}"
+      mode: "0755"
+    # NOTE(cloudnull): The "src" path is relative. This ensures all files remain
+    #                  within the host/container confines when connecting to
+    #                  them using the connection plugin or the root filesystem.
+    - dest: "{{ glance_etc_dir }}"
+      src: "{{ glance_bin | dirname | regex_replace('^/', '../') }}/etc/glance"
+      state: link
+      force: true
+      condition: "{{ glance_install_method == 'source' }}"
+    - path: "{{ glance_etc_dir }}/rootwrap.d"
+      owner: "root"
+      group: "root"
     - path: "/var/cache/glance"
     - path: "{{ glance_system_user_home }}"
     - path: "{{ glance_system_user_home }}/cache"

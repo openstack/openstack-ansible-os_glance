@@ -51,3 +51,9 @@
       - section: "glance"
         option: "venv_tag"
         value: "{{ glance_venv_tag }}"
+
+- name: Link in the os-brick rootwrap filters
+  file:
+    src: "{{ glance_bin | dirname }}/etc/os-brick/rootwrap.d/os-brick.filters"
+    dest: "{{ glance_etc_dir }}/rootwrap.d/os-brick.filters"
+    state: link
