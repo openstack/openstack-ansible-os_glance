@@ -207,7 +207,7 @@ glance_policy_dirs: policy.d
 # Define nfs information to enable nfs shares as mounted directories for
 # glance. The ``glance_nfs_client`` value is a list of dictionaries that must
 # be filled out completely to enable the persistent NFS mounts.
-
+glance_nfs_local_directory: "images"
 glance_nfs_client: []
 
 # Example of the expected dict structure:
