@@ -22,13 +22,13 @@
       jobs:
         - openstack-ansible-nfs_glance
         - openstack-ansible-v2_registry_enabled
-        - openstack-ansible-functional-distro_install-ubuntu-xenial
+        - openstack-ansible-functional-distro_install-ubuntu-bionic
         - openstack-ansible-functional-distro_install-centos-7
         - openstack-ansible-functional-distro_install-opensuse-423
     gate:
       jobs:
         - openstack-ansible-nfs_glance
         - openstack-ansible-v2_registry_enabled
-        - openstack-ansible-functional-distro_install-ubuntu-xenial
+        - openstack-ansible-functional-distro_install-ubuntu-bionic
         - openstack-ansible-functional-distro_install-centos-7
         - openstack-ansible-functional-distro_install-opensuse-423
