@@ -68,6 +68,7 @@
       mode: "0750"
     - path: "/var/cache/glance"
     - path: "{{ glance_system_user_home }}"
+    - path: "{{ glance_system_user_home }}/cache"
     - path: "{{ glance_system_user_home }}/cache/api"
       mode: "0700"
     - path: "{{ glance_system_user_home }}/cache/registry"
