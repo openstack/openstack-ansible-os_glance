@@ -40,11 +40,11 @@
   tags:
     - always
 
-- include_tasks: glance_install.yml
+- import_tasks: glance_install.yml
   tags:
     - glance-install
 
-- include_tasks: glance_post_install.yml
+- import_tasks: glance_post_install.yml
   tags:
     - glance-config
 
