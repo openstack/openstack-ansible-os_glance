@@ -23,6 +23,7 @@ glance_install_method: "source"
 # for the service setup. The host must already have
 # clouds.yaml properly configured.
 glance_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
+glance_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((glance_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
 
 # Set the package install state for distribution and pip packages
 # Options are 'present' and 'latest'
