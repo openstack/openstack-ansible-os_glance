@@ -98,7 +98,7 @@
     section: "glance"
     option: "need_service_restart"
     value: true
-  when: (install_packages | changed) or
+  when: (install_packages is changed) or
         ('need_service_restart' not in ansible_local['openstack_ansible']['glance'])
 
 - name: Run the systemd service role
