@@ -121,4 +121,4 @@
       hour: "*"
     - name: "{{ glance_bin }}/glance-cache-cleaner"
       hour: "*/5"
-  when: glance_flavor | search("cache")
+  when: glance_flavor is search("cache")
