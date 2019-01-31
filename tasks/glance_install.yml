@@ -47,6 +47,8 @@
   file:
     path: "{{ item.local_path }}"
     state: directory
+    owner: "{{ glance_system_user_name }}"
+    group: "{{ glance_system_group_name }}"
     mode: "0755"
   with_items: "{{ glance_nfs_client }}"
 
