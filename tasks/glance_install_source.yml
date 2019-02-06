@@ -30,7 +30,7 @@
 
 - name: Ensure remote wheel building is disabled in developer mode
   set_fact:
-    venv_build_host: "{{ ansible_hostname }}"
+    venv_build_host: "{{ inventory_hostname }}"
   when:
     - glance_developer_mode | bool
 
