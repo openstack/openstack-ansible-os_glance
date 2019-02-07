@@ -71,7 +71,7 @@ rabbit_notification_exchange = glance
 rabbit_notification_topic = notifications
 
 [oslo_messaging_notifications]
-driver = {% if glance_ceilometer_enabled %}messagingv2{% else %}noop{% endif %}
+driver = {{ (glance_ceilometer_enabled | bool) | ternary('messagingv2', 'noop') }}
 transport_url = {{ glance_oslomsg_notify_transport }}://{% for host in glance_oslomsg_notify_servers.split(',') %}{{ glance_oslomsg_notify_userid }}:{{ glance_oslomsg_notify_password }}@{{ host }}:{{ glance_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ glance_oslomsg_notify_vhost }}{% if glance_oslomsg_notify_use_ssl | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 [paste_deploy]
