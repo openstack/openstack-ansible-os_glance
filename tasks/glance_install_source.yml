@@ -37,7 +37,6 @@
 - name: Install the python venv
   include_role:
     name: "python_venv_build"
-    private: yes
   vars:
     venv_build_distro_package_list: "{{ glance_devel_distro_packages }}"
     venv_install_destination_path: "{{ glance_bin | dirname }}"

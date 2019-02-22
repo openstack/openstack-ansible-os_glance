@@ -81,7 +81,6 @@
 - name: Run the systemd mount role
   include_role:
     name: systemd_mount
-    private: true
   vars:
     systemd_mounts:
       - config_overrides: "{{ mount_var.config_overrides | default({}) }}"

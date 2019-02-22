@@ -107,7 +107,6 @@
 - name: Run the systemd service role
   include_role:
     name: systemd_service
-    private: true
   vars:
     systemd_user_name: "{{ glance_system_user_name }}"
     systemd_group_name: "{{ glance_system_group_name }}"
