@@ -21,4 +21,3 @@ glance_package_list: |-
   {{ packages }}
 
 _glance_bin: "/usr/bin"
-_glance_etc: "/etc"

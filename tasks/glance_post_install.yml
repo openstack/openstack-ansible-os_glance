@@ -24,59 +24,87 @@
     config_type: "{{ item.config_type }}"
   when: item.condition | default(True)
   with_items:
-    - src: "glance-api-paste.ini.j2"
-      dest: "/etc/glance/glance-api-paste.ini"
-      config_overrides: "{{ glance_glance_api_paste_ini_overrides }}"
-      config_type: "ini"
     - src: "glance-api.conf.j2"
-      dest: "/etc/glance/glance-api.conf"
+      dest: "{{ glance_etc_dir }}/glance-api.conf"
       config_overrides: "{{ glance_glance_api_conf_overrides }}"
       config_type: "ini"
     - src: "glance-cache.conf.j2"
-      dest: "/etc/glance/glance-cache.conf"
+      dest: "{{ glance_etc_dir }}/glance-cache.conf"
       config_overrides: "{{ glance_glance_cache_conf_overrides }}"
       config_type: "ini"
     - src: "glance-manage.conf.j2"
-      dest: "/etc/glance/glance-manage.conf"
+      dest: "{{ glance_etc_dir }}/glance-manage.conf"
       config_overrides: "{{ glance_glance_manage_conf_overrides }}"
       config_type: "ini"
-    - src: "glance-registry-paste.ini.j2"
-      dest: "/etc/glance/glance-registry-paste.ini"
-      config_overrides: "{{ glance_glance_registry_paste_ini_overrides }}"
-      config_type: "ini"
-      condition: "{{ glance_services['glance-registry']['condition'] | bool }}"
     - src: "glance-registry.conf.j2"
-      dest: "/etc/glance/glance-registry.conf"
+      dest: "{{ glance_etc_dir }}/glance-registry.conf"
       config_overrides: "{{ glance_glance_registry_conf_overrides }}"
       config_type: "ini"
       condition: "{{ glance_services['glance-registry']['condition'] | bool }}"
     - src: "glance-scrubber.conf.j2"
-      dest: "/etc/glance/glance-scrubber.conf"
+      dest: "{{ glance_etc_dir }}/glance-scrubber.conf"
       config_overrides: "{{ glance_glance_scrubber_conf_overrides }}"
       config_type: "ini"
     - src: "glance-swift-store.conf.j2"
-      dest: "/etc/glance/glance-swift-store.conf"
+      dest: "{{ glance_etc_dir }}/glance-swift-store.conf"
       config_overrides: "{{ glance_glance_swift_store_conf_overrides }}"
       config_type: "ini"
-    - src: "policy.json.j2"
-      dest: "/etc/glance/policy.json-{{ glance_venv_tag }}"
-      config_overrides: "{{ glance_policy_overrides }}"
-      config_type: "json"
-    - src: "schema.json.j2"
-      dest: "/etc/glance/schema.json"
+    - src: "schema-image.json.j2"
+      dest: "{{ glance_etc_dir }}/schema-image.json"
       config_overrides: "{{ glance_glance_scheme_json_overrides }}"
       config_type: "json"
-    - src: "schema.json.j2"
-      dest: "/etc/glance/schema-image.json"
-      config_overrides: "{{ glance_glance_scheme_json_overrides }}"
-      config_type: "json"
-    - src: "rootwrap.conf.j2"
-      dest: "/etc/glance/rootwrap.conf"
-      config_overrides: "{{ glance_glance_rootwrap_conf_overrides }}"
-      config_type: "ini"
   notify:
     - Manage LB
     - Restart glance services
+
+# NOTE(cloudnull): This is using "cp" instead of copy with a remote_source
+#                  because we only want to copy the original files once. and we
+#                  don't want to need multiple tasks.
+- name: Preserve original configuration file(s)
+  command: "cp {{ item.target_f }} {{ item.target_f }}.original"
+  args:
+    creates: "{{ item.target_f }}.original"
+  with_items: "{{ glance_core_files }}"
+
+- name: Fetch override files
+  fetch:
+    src: "{{ item.target_f }}"
+    dest: "{{ item.tmp_f }}"
+    flat: yes
+  changed_when: false
+  run_once: true
+  with_items: "{{ glance_core_files }}"
+
+- name: Copy common config
+  config_template:
+    src: "{{ item.tmp_f }}"
+    dest: "{{ item.target_f_override | default(item.target_f) }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default(glance_system_group_name) }}"
+    mode: "{{ item.mode | default('0640') }}"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items: "{{ glance_core_files }}"
+  notify:
+    - Restart glance services
+
+- name: Cleanup fetched temp files
+  file:
+    path: "{{ item.tmp_f }}"
+    state: absent
+  changed_when: false
+  delegate_to: localhost
+  run_once: true
+  with_items: "{{ glance_core_files }}"
+
+# NOTE(cloudnull): This will ensure strong permissions on all rootwrap files.
+- name: Set rootwrap.d permissions
+  file:
+    path: "{{ glance_etc_dir }}/rootwrap.d"
+    owner: "root"
+    group: "root"
+    mode: "0640"
+    recurse: true
 
 - name: Run the systemd mount role
   include_role:

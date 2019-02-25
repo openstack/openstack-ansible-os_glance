@@ -21,5 +21,4 @@ glance_package_list: |-
   {{ packages }}
 
 _glance_bin: "/openstack/venvs/glance-{{ glance_venv_tag }}/bin"
-_glance_etc: "{{ _glance_bin | dirname + '/etc' }}"
 glance_uwsgi_bin: "{{ _glance_bin }}"

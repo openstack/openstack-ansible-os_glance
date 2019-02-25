@@ -39,3 +39,18 @@ glance_mount_points: |-
   {%   set _ = mps.append(mp.local_path) %}
   {% endfor %}
   {{ mps }}
+
+glance_core_files:
+  - tmp_f: "/tmp/policy.json"
+    target_f: "{{ glance_etc_dir }}/policy.json"
+    config_overrides: "{{ glance_policy_overrides }}"
+    config_type: "json"
+    condition: true
+  - tmp_f: "/tmp/glance-registry-paste.ini"
+    target_f: "{{ glance_etc_dir }}/glance-registry-paste.ini"
+    config_overrides: "{{ glance_glance_registry_paste_ini_overrides }}"
+    config_type: "ini"
+  - tmp_f: "/tmp/glance-api-paste.ini"
+    target_f: "{{ glance_etc_dir }}/glance-api-paste.ini"
+    config_overrides: "{{ glance_glance_api_paste_ini_overrides }}"
+    config_type: "ini"
