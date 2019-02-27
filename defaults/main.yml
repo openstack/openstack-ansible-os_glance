@@ -263,6 +263,9 @@ glance_pip_packages:
   - uwsgi
   - warlock
 
+# Specific pip packages provided by the user
+glance_user_pip_packages: []
+
 glance_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
 
