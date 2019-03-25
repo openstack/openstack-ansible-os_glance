@@ -127,8 +127,27 @@
   retries: 5
   delay: 2
 
-- name: Install glance packages from PIP
-  include_tasks: glance_install_source.yml
+- name: Install the python venv
+  import_role:
+    name: "python_venv_build"
+    private: yes
+  vars:
+    venv_build_constraints: "{{ glance_git_constraints }}"
+    venv_build_distro_package_list: "{{ glance_devel_distro_packages }}"
+    venv_install_destination_path: "{{ glance_bin | dirname }}"
+    venv_install_distro_package_list: "{{ glance_distro_packages }}"
+    venv_pip_install_args: "{{ glance_pip_install_args }}"
+    venv_pip_packages: >-
+      {{ glance_pip_packages |
+           union(glance_user_pip_packages) |
+             union(((glance_oslomsg_amqp1_enabled | bool) | ternary(glance_optional_oslomsg_amqp1_pip_packages, []))) }}
+    venv_facts_when_changed:
+      - section: "glance"
+        option: "need_service_restart"
+        value: True
+      - section: "glance"
+        option: "venv_tag"
+        value: "{{ glance_venv_tag }}"
   when: glance_install_method == 'source'
 
 - name: Record the need for a service restart
