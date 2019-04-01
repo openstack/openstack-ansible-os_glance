@@ -37,12 +37,12 @@
       rabbitmq_user:
         user: "{{ _oslomsg_rpc_userid }}"
         password: "{{ _oslomsg_rpc_password }}"
+        update_password: always
         vhost: "{{ _oslomsg_rpc_vhost }}"
         configure_priv: ".*"
         read_priv: ".*"
         write_priv: ".*"
         state: "present"
-        force: true
       no_log: true
 
 - name: Setup Notify MQ Service (RabbitMQ)
