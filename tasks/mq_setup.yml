@@ -35,7 +35,6 @@
 
     - name: Apply RPC RabbitMQ vhost policies
       rabbitmq_policy:
-        node: "rabbit@{{ _oslomsg_rpc_setup_host }}"
         name: "{{ item.name }}"
         pattern: "{{ item.pattern }}"
         priority: "{{ item.priority | default(0) }}"
@@ -72,7 +71,6 @@
 
     - name: Apply Notify RabbitMQ vhost policies
       rabbitmq_policy:
-        node: "rabbit@{{ _oslomsg_notify_setup_host }}"
         name: "{{ item.name }}"
         pattern: "{{ item.pattern }}"
         priority: "{{ item.priority | default(0) }}"
