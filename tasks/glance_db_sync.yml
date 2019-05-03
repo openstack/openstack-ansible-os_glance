@@ -13,32 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create DB for service
-  mysql_db:
-    login_user: "{{ galera_root_user }}"
-    login_password: "{{ galera_root_password }}"
-    login_host: "{{ glance_galera_address }}"
-    name: "{{ glance_galera_database }}"
-    state: "present"
-  delegate_to: "{{ glance_db_setup_host }}"
-  no_log: True
-
-- name: Grant access to the DB for the service
-  mysql_user:
-    login_user: "{{ galera_root_user }}"
-    login_password: "{{ galera_root_password }}"
-    login_host: "{{ glance_galera_address }}"
-    name: "{{ glance_galera_user }}"
-    password: "{{ glance_container_mysql_password }}"
-    host: "{{ item }}"
-    state: "present"
-    priv: "{{ glance_galera_database }}.*:ALL"
-  delegate_to: "{{ glance_db_setup_host }}"
-  with_items:
-    - "localhost"
-    - "%"
-  no_log: True
-
 - name: Perform a Glance DB sync
   command: "{{ glance_bin }}/glance-manage db_sync"
   become: yes
