@@ -305,3 +305,6 @@ glance_glance_scheme_json_overrides: {}
 glance_glance_swift_store_conf_overrides: {}
 glance_policy_overrides: {}
 glance_api_uwsgi_ini_overrides: {}
+
+# Specify path on the local filesystem for glance-image-import.conf
+#glance_glance_image_import_conf_location: /path/to/local/glance-image-import.conf

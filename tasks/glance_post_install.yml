@@ -57,6 +57,15 @@
     - Manage LB
     - Restart glance services
 
+- name: Deploy Glance image import configuration file
+  template:
+    src: "{{ glance_glance_image_import_conf_location }}"
+    dest: "{{ glance_etc_dir }}/glance-image-import.conf"
+  when: glance_glance_image_import_conf_location is defined
+  notify:
+    - Manage LB
+    - Restart glance services
+
 # NOTE(cloudnull): This is using "cp" instead of copy with a remote_source
 #                  because we only want to copy the original files once. and we
 #                  don't want to need multiple tasks.
