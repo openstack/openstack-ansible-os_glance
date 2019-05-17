@@ -130,7 +130,6 @@
 - name: Install the python venv
   import_role:
     name: "python_venv_build"
-    private: yes
   vars:
     venv_build_constraints: "{{ glance_git_constraints }}"
     venv_build_distro_package_list: "{{ glance_devel_distro_packages }}"
