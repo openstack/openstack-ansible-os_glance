@@ -24,8 +24,6 @@
     check:
       jobs:
         - openstack-ansible-nfs_glance
-        - openstack-ansible-v2_registry_enabled
     gate:
       jobs:
         - openstack-ansible-nfs_glance
-        - openstack-ansible-v2_registry_enabled
