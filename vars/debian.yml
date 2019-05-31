@@ -28,10 +28,9 @@ glance_devel_distro_packages:
   - libxml2-dev
 
 glance_service_distro_packages:
-  - glance
-  - glance-api
+  - python3-glance
   - uwsgi
-  - uwsgi-plugin-python
+  - uwsgi-plugin-python3
 
 glance_oslomsg_amqp1_distro_packages:
   - libsasl2-modules
