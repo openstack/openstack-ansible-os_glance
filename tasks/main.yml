@@ -40,12 +40,19 @@
   tags:
     - always
 
-- import_tasks: glance_install.yml
+- import_tasks: db_setup.yml
+  when:
+    - "glance_services['glance-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[glance_services['glance-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+  vars:
+    _oslodb_setup_host: "{{ glance_db_setup_host }}"
+    _oslodb_databases:
+      - name: "{{ glance_galera_database }}"
+        users:
+          - username: "{{ glance_galera_user }}"
+            password: "{{ glance_container_mysql_password }}"
   tags:
-    - glance-install
-
-- import_tasks: glance_post_install.yml
-  tags:
+    - common-db
     - glance-config
 
 - import_tasks: mq_setup.yml
@@ -67,11 +74,20 @@
     - common-mq
     - glance-config
 
-- import_tasks: glance_db_setup.yml
+- import_tasks: glance_install.yml
+  tags:
+    - glance-install
+
+- import_tasks: glance_post_install.yml
+  tags:
+    - glance-config
+
+- import_tasks: glance_db_sync.yml
   when:
     - "glance_services['glance-api']['group'] in group_names"
     - "inventory_hostname == ((groups[glance_services['glance-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
   tags:
+    - common-db
     - glance-config
 
 - import_tasks: glance_service_setup.yml
