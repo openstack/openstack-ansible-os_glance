@@ -240,6 +240,7 @@ glance_pip_packages:
   - glance
   - keystonemiddleware
   - os-brick
+  - oslo.rootwrap
   - osprofiler
   - PyMySQL
   - python-cinderclient

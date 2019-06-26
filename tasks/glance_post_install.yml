@@ -13,6 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# NOTE(CeeMac): This task is required to copy rootwrap filters that we need
+# and glance does not provide by default.
+- name: Create aux glance dir
+  file:
+    path: "{{ item.path | default(omit) }}"
+    state: "directory"
+    owner: "{{ item.owner|default(glance_system_user_name) }}"
+    group: "{{ item.group|default(glance_system_group_name) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  loop:
+    - path: "/etc/glance/rootwrap.d"
+      owner: "root"
+      group: "root"
+
+- name: Copy glance rootwrap filter config
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/glance/rootwrap.d/"
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - rootwrap.d/*
+  tags:
+    - glance-config
+    - glance-post-install
+
 - name: Deploy Glance configuration files
   config_template:
     src: "{{ item.src }}"
@@ -158,3 +184,15 @@
     - name: "{{ glance_bin }}/glance-cache-cleaner"
       hour: "*/5"
   when: glance_flavor is search("cache")
+
+- name: Drop sudoers file
+  template:
+    src: "sudoers.j2"
+    dest: "/etc/sudoers.d/{{ glance_system_user_name }}_sudoers"
+    mode: "0440"
+    owner: "root"
+    group: "root"
+    validate: '/usr/sbin/visudo -cf %s'
+  tags:
+    - sudoers
+    - glance-sudoers
