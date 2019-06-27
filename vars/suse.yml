@@ -16,10 +16,10 @@
 
 glance_distro_packages:
   - git-core
-  - libxml2
   - nfs-utils
+  - libxslt1
   - rpcbind
-  - cronie
+  - cron
 
 glance_devel_distro_packages:
   - libxml2-devel
