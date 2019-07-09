@@ -90,7 +90,31 @@
     - common-db
     - glance-config
 
-- import_tasks: glance_service_setup.yml
+- import_tasks: service_setup.yml
+  vars:
+    _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
+    _service_in_ldap: "{{ glance_service_in_ldap }}"
+    _service_setup_host: "{{ glance_service_setup_host }}"
+    _service_setup_host_python_interpreter: "{{ glance_service_setup_host_python_interpreter }}"
+    _service_user_name: "{{ glance_service_user_name }}"
+    _service_user_password: "{{ glance_service_password }}"
+    _service_project_name: "{{ glance_service_project_name }}"
+    _service_role_name: "{{ glance_role_name }}"
+    _service_region: "{{ glance_service_region }}"
+    _service_catalog:
+      - name: "{{ glance_service_name }}"
+        type: "{{ glance_service_type }}"
+        description: "{{ glance_service_description }}"
+    _service_endpoints:
+      - interface: "public"
+        url: "{{ glance_service_publicurl }}"
+        service: "{{ glance_service_name }}"
+      - interface: "internal"
+        url: "{{ glance_service_internalurl }}"
+        service: "{{ glance_service_name }}"
+      - interface: "admin"
+        url: "{{ glance_service_adminurl }}"
+        service: "{{ glance_service_name }}"
   when:
     - "glance_services['glance-api']['group'] in group_names"
     - "inventory_hostname == ((groups[glance_services['glance-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
