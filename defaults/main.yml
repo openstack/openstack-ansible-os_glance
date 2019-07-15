@@ -247,6 +247,7 @@ glance_pip_packages:
   - python-keystoneclient
   - python-memcached
   - python-swiftclient
+  - systemd-python
   - uwsgi
   - warlock
 

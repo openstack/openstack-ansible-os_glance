@@ -5,7 +5,7 @@
 use_stderr = False
 debug = {{ debug }}
 fatal_deprecations = {{ glance_fatal_deprecations }}
-log_file = /var/log/glance/glance-registry.log
+use_journal = True
 bind_host = {{ glance_registry_bind_address }}
 bind_port = {{ glance_registry_service_port }}
 http_keepalive = {{ glance_http_keepalive }}

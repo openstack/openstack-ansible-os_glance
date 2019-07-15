@@ -4,12 +4,7 @@
 # Disable stderr logging
 use_stderr = False
 debug = {{ debug }}
-# Log to this file. Make sure you do not set the same log file for both the API
-# and registry servers!
-#
-# If `log_file` is omitted then log messages are
-# sent to stdout as a fallback.
-log_file = /var/log/glance/scrubber.log
+use_journal = True
 
 # Should we run our own loop or rely on cron/scheduler to run us
 daemon = False
