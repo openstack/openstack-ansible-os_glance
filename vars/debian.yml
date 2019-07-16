@@ -26,9 +26,11 @@ glance_distro_packages:
 
 glance_devel_distro_packages:
   - libxml2-dev
+  - libsystemd-dev
 
 glance_service_distro_packages:
   - python3-glance
+  - python3-systemd
   - uwsgi
   - uwsgi-plugin-python3
 

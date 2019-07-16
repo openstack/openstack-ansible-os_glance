@@ -4,7 +4,7 @@
 # Disable stderr logging
 use_stderr = False
 debug = {{ debug }}
-log_file = /var/log/glance/glance-api.log
+use_journal = True
 fatal_deprecations = {{ glance_fatal_deprecations }}
 bind_host = {{ glance_api_bind_address }}
 bind_port = {{ glance_api_service_port }}

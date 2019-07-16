@@ -2,7 +2,7 @@
 # Disable stderr logging
 use_stderr = False
 debug = {{ debug }}
-log_file = /var/log/glance/glance-manage.log
+use_journal = True
 fatal_deprecations = {{ glance_fatal_deprecations }}
 
 [database]

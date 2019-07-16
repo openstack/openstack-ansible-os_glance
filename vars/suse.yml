@@ -23,10 +23,12 @@ glance_distro_packages:
 
 glance_devel_distro_packages:
   - libxml2-devel
+  - systemd-devel
 
 glance_service_distro_packages:
   - openstack-glance
   - openstack-glance-api
+  - python-systemd
   - uwsgi
   - uwsgi-python
 
