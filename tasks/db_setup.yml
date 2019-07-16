@@ -36,5 +36,6 @@
         password: "{{ item.1.password }}"
         host: "{{ item.1.host | default('%') }}"
         priv: "{{ item.0.name }}.*:{{ item.1.priv | default('ALL') }}"
+        append_privs: yes
       loop: "{{ _oslodb_databases | subelements('users') }}"
       no_log: true
