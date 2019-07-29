@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2019, VEXXHOST, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,10 +39,10 @@
         description: "{{ _project_description | default('') }}"
         domain_id: "default"
         endpoint_type: admin
-        validate_certs: "{{ (not _service_adminuri_insecure | default('True')) | bool }}"
+        validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
       when:
-        - not _service_in_ldap | bool
+        - not (_service_in_ldap | default(False) | bool)
         - _project_name is defined
       until: add_service is success
       retries: 5
@@ -56,7 +56,7 @@
         service_type: "{{ item.type }}"
         description: "{{ item.description | default('') }}"
         endpoint_type: admin
-        validate_certs: "{{ (not _service_adminuri_insecure | default('True')) | bool }}"
+        validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
       with_items: "{{ _service_catalog }}"
       when: _service_catalog is defined
@@ -64,56 +64,65 @@
       retries: 5
       delay: 10
 
-    - name: Add default role
+    - name: Add keystone roles
       os_keystone_role:
         cloud: default
         state: present
-        name: "{{ _role_name }}"
+        name: "{{ item.role }}"
         endpoint_type: admin
-        validate_certs: "{{ (not _service_adminuri_insecure | default('True')) | bool }}"
+        validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
       when:
-        - not _service_in_ldap | bool
-        - _role_name is defined
+        - not (_service_in_ldap | default(False) | bool)
+        - _service_users is defined
+        - "'role' in item"
+        - (item.condition | default(True)) | bool
       until: add_service is success
+      with_items: "{{ _service_users }}"
       retries: 5
       delay: 10
 
-    - name: Add service user
+    - name: Add service users
       os_user:
         cloud: default
         state: present
-        name: "{{ _service_user_name }}"
-        password: "{{ _service_user_password }}"
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
         domain: default
-        default_project: "{{ _service_project_name }}"
+        default_project: "{{ item.project | default(_service_project_name) }}"
         endpoint_type: admin
-        validate_certs: "{{ (not _service_adminuri_insecure | default('True')) | bool }}"
+        validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
       when:
-        - not _service_in_ldap | bool
-        - _service_user_name is defined
-        - _service_user_password is defined
+        - not (_service_in_ldap | default(False) | bool)
+        - _service_users is defined
+        - "'name' in item"
+        - "'password' in item"
+        - (item.condition | default(True)) | bool
       until: add_service is success
+      with_items: "{{ _service_users }}"
       retries: 5
       delay: 10
       no_log: True
 
-    - name: Add service user to admin role
+    - name: Add service users to the role
       os_user_role:
         cloud: default
         state: present
-        user: "{{ _service_user_name }}"
-        role: "{{ _service_role_name }}"
-        project: "{{ _service_project_name }}"
+        user: "{{ item.name }}"
+        role: "{{ item.role }}"
+        project: "{{ item.project | default(_service_project_name) }}"
         endpoint_type: admin
-        validate_certs: "{{ (not _service_adminuri_insecure | default('True')) | bool }}"
+        validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
       when:
-        - not _service_in_ldap | bool
-        - _service_user_name is defined
-        - _service_role_name is defined
+        - not (_service_in_ldap | default(False) | bool)
+        - _service_users is defined
+        - "'name' in item"
+        - "'role' in item"
+        - (item.condition | default(True)) | bool
       until: add_service is success
+      with_items: "{{ _service_users }}"
       retries: 5
       delay: 10
 
@@ -126,7 +135,7 @@
         url: "{{ item.url }}"
         region: "{{ _service_region | default('RegionOne') }}"
         endpoint_type: admin
-        validate_certs: "{{ (not _service_adminuri_insecure | default('True')) | bool }}"
+        validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
       until: add_service is success
       retries: 5

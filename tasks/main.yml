@@ -96,11 +96,12 @@
     _service_in_ldap: "{{ glance_service_in_ldap }}"
     _service_setup_host: "{{ glance_service_setup_host }}"
     _service_setup_host_python_interpreter: "{{ glance_service_setup_host_python_interpreter }}"
-    _service_user_name: "{{ glance_service_user_name }}"
-    _service_user_password: "{{ glance_service_password }}"
     _service_project_name: "{{ glance_service_project_name }}"
-    _service_role_name: "{{ glance_role_name }}"
     _service_region: "{{ glance_service_region }}"
+    _service_users:
+      - name: "{{ glance_service_user_name }}"
+        password: "{{ glance_service_password }}"
+        role: "{{ glance_role_name }}"
     _service_catalog:
       - name: "{{ glance_service_name }}"
         type: "{{ glance_service_type }}"
