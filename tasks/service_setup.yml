@@ -31,13 +31,26 @@
   vars:
     ansible_python_interpreter: "{{ _service_setup_host_python_interpreter }}"
   block:
+    - name: Add keystone domain
+      os_keystone_domain:
+        cloud: default
+        state: present
+        name: "{{ _domain_name }}"
+        endpoint_type: admin
+        verify: "{{ not _service_adminuri_insecure }}"
+      register: add_domain
+      when: _domain_name is defined
+      until: add_domain is success
+      retries: 5
+      delay: 10
+
     - name: Add service project
       os_project:
         cloud: default
         state: present
         name: "{{ _project_name }}"
-        description: "{{ _project_description | default('') }}"
-        domain_id: "default"
+        description: "{{ _project_description | default(omit) }}"
+        domain_id: "{{ _project_domain | default('default') }}"
         endpoint_type: admin
         validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
@@ -88,10 +101,11 @@
         state: present
         name: "{{ item.name }}"
         password: "{{ item.password }}"
-        domain: default
+        domain: "{{ item.domain | default('default') }}"
         default_project: "{{ item.project | default(_service_project_name) }}"
         endpoint_type: admin
         validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
+        update_password: always
       register: add_service
       when:
         - not (_service_in_ldap | default(False) | bool)
@@ -112,6 +126,7 @@
         user: "{{ item.name }}"
         role: "{{ item.role }}"
         project: "{{ item.project | default(_service_project_name) }}"
+        domain: "{{ item.domain | default(omit) }}"
         endpoint_type: admin
         validate_certs: "{{ not (_service_adminuri_insecure | default(True) | bool) }}"
       register: add_service
