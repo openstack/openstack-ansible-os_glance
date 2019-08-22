@@ -249,7 +249,6 @@ glance_pip_packages:
   - python-memcached
   - python-swiftclient
   - systemd-python
-  - uwsgi
   - warlock
 
 # Specific pip packages provided by the user
@@ -268,13 +267,11 @@ glance_services:
     service_name: glance-api
     init_config_overrides: "{{ glance_api_init_overrides }}"
     start_order: 1
-    wsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
     wsgi_app: True
     wsgi_name: glance-wsgi-api
+    uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
     uwsgi_bind_address: "{{ glance_api_bind_address }}"
     uwsgi_port: "{{ glance_api_service_port }}"
-    execstarts: "{{ glance_uwsgi_bin }}/uwsgi --autoload --ini /etc/uwsgi/glance-api.ini"
-    execreloads: "{{ glance_uwsgi_bin }}/uwsgi --reload /var/run/glance-api/glance-api.pid"
   glance-registry:
     group: glance_registry
     service_name: glance-registry
@@ -287,7 +284,6 @@ glance_services:
 glance_wsgi_processes_max: 16
 glance_wsgi_processes: "{{ [[ansible_processor_vcpus|default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}"
 glance_wsgi_threads: 1
-glance_wsgi_buffer_size: 65535
 
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the

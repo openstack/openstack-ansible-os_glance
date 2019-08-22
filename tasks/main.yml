@@ -122,6 +122,17 @@
   tags:
     - glance-config
 
+- name: Import uwsgi role
+  import_role:
+    name: uwsgi
+  vars:
+    uwsgi_services: "{{ uwsgi_glance_services }}"
+    uwsgi_install_method: "{{ glance_install_method }}"
+  tags:
+    - glance-install
+    - glance-config
+    - uwsgi
+
 - name: Import ceph_client role
   import_role:
     name: ceph_client

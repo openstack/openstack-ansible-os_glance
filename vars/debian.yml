@@ -31,11 +31,7 @@ glance_devel_distro_packages:
 glance_service_distro_packages:
   - python3-glance
   - python3-systemd
-  - uwsgi
-  - uwsgi-plugin-python3
 
 glance_oslomsg_amqp1_distro_packages:
   - libsasl2-modules
   - sasl2-bin
-
-glance_uwsgi_bin: '/usr/bin'
