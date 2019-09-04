@@ -94,6 +94,7 @@
       with_items: "{{ _service_users }}"
       retries: 5
       delay: 10
+      no_log: True
 
     - name: Add service users
       os_user:
@@ -140,6 +141,7 @@
       with_items: "{{ _service_users }}"
       retries: 5
       delay: 10
+      no_log: True
 
     - name: Add endpoints to keystone endpoint catalog
       os_keystone_endpoint:

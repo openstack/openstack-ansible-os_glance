@@ -29,6 +29,7 @@
       mysql_db:
         name: "{{ item.name }}"
       loop: "{{ _oslodb_databases }}"
+      no_log: true
 
     - name: Grant access to the database for the service
       mysql_user:
