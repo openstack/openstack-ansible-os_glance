@@ -27,15 +27,11 @@ glance_devel_distro_packages:
 glance_service_distro_packages:
   - openstack-glance
   - systemd-python
-  - uwsgi
-  - uwsgi-plugin-python
 
 glance_oslomsg_amqp1_distro_packages:
   - cyrus-sasl-lib
   - cyrus-sasl-plain
   - cyrus-sasl-md5
-
-glance_uwsgi_bin: '/usr/sbin'
 
 glance_core_files:
   - tmp_f: "/tmp/policy.json"
