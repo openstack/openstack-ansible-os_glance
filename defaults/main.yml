@@ -18,6 +18,7 @@ debug: False
 
 # Set installation method
 glance_install_method: "source"
+glance_venv_python_executable: "{{ openstack_venv_python_executable | default('python2') }}"
 
 # Set the host which will execute the shade modules
 # for the service setup. The host must already have
