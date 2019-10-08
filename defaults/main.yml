@@ -127,10 +127,10 @@ glance_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
 glance_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/galera-ca.pem') }}"
 
 glance_role_name: admin
-glance_api_bind_address: 0.0.0.0
+glance_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 glance_api_service_port: 9292
 
-glance_registry_bind_address: 0.0.0.0
+glance_registry_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 glance_registry_service_port: 9191
 
 ## Service Type and Data
