@@ -50,6 +50,8 @@
     owner: "{{ glance_system_user_name }}"
     group: "{{ glance_system_group_name }}"
     mode: "0755"
+    owner: "{{ item.owner | default(glance_system_user_name) }}"
+    group: "{{ item.group | default(glance_system_group_name) }}"
   with_items: "{{ glance_nfs_client }}"
 
 # NOTE(cloudnull): During an upgrade the local directory may exist on a source
@@ -111,7 +113,7 @@
       mode: "0700"
     - path: "{{ glance_system_user_home }}/cache/registry"
     - path: "{{ glance_system_user_home }}/scrubber"
-    - path: "{{ glance_system_user_home }}/images"
+    - path: "{{ glance_system_user_home }}/{{ glance_nfs_local_directory }}"
       mode: "0755"
 
 - name: Install distro packages
