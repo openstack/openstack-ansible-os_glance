@@ -21,7 +21,6 @@
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-functional-centos-7
-        - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-nfs_glance
         - openstack-ansible-v2_api_only
@@ -30,7 +29,6 @@
       jobs:
         - openstack-ansible-linters
         - openstack-ansible-functional-centos-7
-        - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-nfs_glance
         - openstack-ansible-v2_api_only
