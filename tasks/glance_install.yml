@@ -47,8 +47,6 @@
   file:
     path: "{{ item.local_path }}"
     state: directory
-    owner: "{{ glance_system_user_name }}"
-    group: "{{ glance_system_group_name }}"
     mode: "0755"
     owner: "{{ item.owner | default(glance_system_user_name) }}"
     group: "{{ item.group | default(glance_system_group_name) }}"
