@@ -87,7 +87,6 @@
     - "glance_services['glance-api']['group'] in group_names"
     - "inventory_hostname == ((groups[glance_services['glance-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
   tags:
-    - common-db
     - glance-config
 
 - import_tasks: service_setup.yml
