@@ -33,7 +33,7 @@ glance_pip_package_state: "latest"
 
 glance_git_repo: https://opendev.org/openstack/glance
 glance_git_install_branch: master
-glance_upper_constraints_url: "{{ requirements_git_url | default('https://opendev.org/openstack/requirements/raw/' ~ requirements_git_install_branch | default('master') ~ '/upper-constraints.txt') }}"
+glance_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 glance_git_constraints:
   - "git+{{ glance_git_repo }}@{{ glance_git_install_branch }}#egg=glance"
   - "--constraint {{ glance_upper_constraints_url }}"
