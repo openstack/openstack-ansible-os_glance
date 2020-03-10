@@ -303,6 +303,7 @@ glance_glance_scrubber_conf_overrides: {}
 glance_glance_scheme_json_overrides: {}
 glance_glance_swift_store_conf_overrides: {}
 glance_policy_overrides: {}
+glance_policy_content: {}
 glance_api_uwsgi_ini_overrides: {}
 
 # Specify path on the local filesystem for glance-image-import.conf

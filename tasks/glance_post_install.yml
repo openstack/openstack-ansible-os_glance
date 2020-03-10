@@ -41,7 +41,8 @@
 
 - name: Deploy Glance configuration files
   config_template:
-    src: "{{ item.src }}"
+    src: "{{ item.src | default(omit) }}"
+    content: "{{ item.content | default(omit) }}"
     dest: "{{ item.dest }}"
     owner: "root"
     group: "{{ glance_system_group_name }}"
@@ -79,6 +80,11 @@
       dest: "{{ glance_etc_dir }}/schema-image.json"
       config_overrides: "{{ glance_glance_scheme_json_overrides }}"
       config_type: "json"
+    - dest: "{{ glance_etc_dir }}/policy.json"
+      config_overrides: "{{ glance_policy_overrides }}"
+      config_type: "json"
+      condition: "{{ (glance_policy_overrides) or (glance_policy_content) }}"
+      content: "{{ glance_policy_content }}"
   notify:
     - Manage LB
     - Restart glance services
