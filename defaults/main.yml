@@ -84,6 +84,7 @@ glance_flavor: "{% if glance_default_store == 'rbd' %}keystone{% else %}keystone
 glance_show_image_direct_url: "{{ glance_default_store == 'rbd' }}"
 glance_show_multiple_locations: "{{ glance_default_store == 'rbd' }}"
 
+glance_memcached_servers: "{{ memcached_servers }}"
 
 ## API options
 glance_enable_v2_api: True
@@ -244,6 +245,7 @@ glance_pip_packages:
   - oslo.rootwrap
   - osprofiler
   - PyMySQL
+  - pymemcache
   - python-cinderclient
   - python-glanceclient
   - python-keystoneclient
