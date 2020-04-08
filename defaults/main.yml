@@ -267,6 +267,10 @@ glance_optional_oslomsg_amqp1_pip_packages:
 glance_api_init_overrides: {}
 glance_registry_init_overrides: {}
 
+# With enabled uwsgi glance has broken functionality of
+# the interoperable import feature (and maybe smth else)
+glance_use_uwsgi: True
+
 ## Service Names
 glance_services:
   glance-api:
@@ -274,7 +278,8 @@ glance_services:
     service_name: glance-api
     init_config_overrides: "{{ glance_api_init_overrides }}"
     start_order: 1
-    wsgi_app: True
+    execstarts: "{{ glance_bin }}/glance-api --config-file /etc/glance/glance.conf"
+    wsgi_app: "{{ glance_use_uwsgi }}"
     wsgi_name: glance-wsgi-api
     uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
     uwsgi_bind_address: "{{ glance_api_bind_address }}"
@@ -285,7 +290,7 @@ glance_services:
     condition: "{{ glance_enable_v2_registry | bool }}"
     init_config_overrides: "{{ glance_registry_init_overrides }}"
     start_order: 2
-    execstarts: "{{ _glance_bin }}/glance-registry"
+    execstarts: "{{ glance_bin }}/glance-registry"
 
 # Glance uWSGI settings
 glance_wsgi_processes_max: 16
