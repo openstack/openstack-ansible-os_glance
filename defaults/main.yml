@@ -77,6 +77,10 @@ glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
 
 glance_registry_host: "{{ internal_lb_vip_address }}"
 glance_default_store: file
+# For support of multiple backends provide `glance_additional_stores` in the format:
+# glance_additional_stores:
+#   - name: private_store
+#     type: http
 glance_additional_stores:
   - http
   - cinder
