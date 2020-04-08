@@ -16,6 +16,7 @@ registry_host = {{ glance_registry_host }}
 registry_port = {{ glance_registry_service_port }}
 registry_client_protocol = {{ glance_service_registry_proto }}
 cinder_catalog_info = volume:cinder:internalURL
+enable_image_import = {{ not glance_use_uwsgi | bool }}
 
 enable_v2_api = {{ glance_enable_v2_api | bool }}
 enable_v2_registry = {{ glance_enable_v2_registry | bool }}
