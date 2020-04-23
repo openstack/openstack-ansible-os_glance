@@ -34,6 +34,10 @@ image_cache_dir = {{ glance_system_user_home }}/cache/
 show_image_direct_url = {{ glance_show_image_direct_url }}
 show_multiple_locations = {{ glance_show_multiple_locations }}
 
+{% set glance_available_stores = [ glance_default_store ] + glance_additional_stores %}
+enabled_backends = {% for backend in glance_available_stores %}{{ ('name' in backend) | ternary(backend['name'], backend) }}:{{ ('type' in backend) | ternary(backend['type'], backend) }}{% if not loop.last %},{% endif %}{% endfor %}
+
+
 [task]
 task_executor = {{ glance_task_executor }}
 
@@ -78,10 +82,7 @@ transport_url = {{ glance_oslomsg_notify_transport }}://{% for host in glance_os
 flavor = {{ glance_flavor }}
 
 [glance_store]
-default_store = {{ glance_default_store }}
-
-{% set glance_available_stores = [ glance_default_store ] + glance_additional_stores %}
-stores = {% for backend in glance_available_stores %}{{ backend }}{% if not loop.last %},{% endif %}{% endfor %}
+default_backend = {{ glance_default_store }}
 
 {% if 'file' in glance_available_stores %}
 filesystem_store_datadir = {{ glance_system_user_home }}/{{ glance_nfs_local_directory }}/
