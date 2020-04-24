@@ -85,10 +85,12 @@ flavor = {{ glance_flavor }}
 default_backend = {{ glance_default_store }}
 
 {% if 'file' in glance_available_stores %}
+[file]
 filesystem_store_datadir = {{ glance_system_user_home }}/{{ glance_nfs_local_directory }}/
 {% endif %}
 
 {% if 'swift' in glance_available_stores %}
+[swift]
 swift_store_config_file = {{ glance_etc_dir }}/glance-swift-store.conf
 default_swift_reference = swift1
 swift_store_auth_insecure = {{ glance_swift_store_auth_insecure | bool }}
@@ -102,6 +104,7 @@ swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
 {% endif %}
 
 {% if 'rbd' in glance_available_stores %}
+[rbd]
 rbd_store_pool = {{ glance_rbd_store_pool }}
 rbd_store_user = {{ glance_rbd_store_user }}
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
