@@ -297,12 +297,6 @@ glance_wsgi_processes_max: 16
 glance_wsgi_processes: "{{ [[ansible_processor_vcpus|default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}"
 glance_wsgi_threads: 1
 
-# This variable is used by the repo_build process to determine
-# which host group to check for members of before building the
-# pip packages required by this role. The value is picked up
-# by the py_pkgs lookup.
-glance_role_project_group: glance_all
-
 ## Tunable overrides
 glance_glance_api_paste_ini_overrides: {}
 glance_glance_api_conf_overrides: {}
