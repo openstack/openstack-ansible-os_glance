@@ -75,7 +75,6 @@ glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
 # glance_system_user_uid: <UID>
 # glance_system_group_gid: <GID>
 
-glance_registry_host: "{{ internal_lb_vip_address }}"
 glance_default_store: file
 # For support of multiple backends provide `glance_additional_stores` in the format:
 # glance_additional_stores:
@@ -92,9 +91,6 @@ glance_memcached_servers: "{{ memcached_servers }}"
 
 ## API options
 glance_enable_v2_api: True
-# The v2 API does not require the registry service.
-# The registry service is scheduled for removal in the S cycle.
-glance_enable_v2_registry: False
 
 ## Oslo Messaging Info
 
@@ -135,15 +131,11 @@ glance_role_name: admin
 glance_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 glance_api_service_port: 9292
 
-glance_registry_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
-glance_registry_service_port: 9191
-
 ## Service Type and Data
 glance_service_region: RegionOne
 glance_service_name: glance
 glance_service_port: 9292
 glance_service_proto: http
-glance_service_registry_proto: "{{ glance_service_proto }}"
 glance_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(glance_service_proto) }}"
 glance_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(glance_service_proto) }}"
 glance_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(glance_service_proto) }}"
@@ -190,10 +182,6 @@ glance_cors_allowed_origin: "{{ (glance_show_multiple_locations | bool) | ternar
 # If ``glance_api_workers`` is unset the system will use half the number of available VCPUS to
 # compute the number of api workers to use.
 # glance_api_workers: 16
-
-# If ``glance_registry_workers`` is unset the system will use half the number of available VCPUS to
-# compute the number of api workers to use.
-# glance_registry_workers: 16
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 glance_api_threads_max: 16
@@ -265,7 +253,6 @@ glance_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
 
 glance_api_init_overrides: {}
-glance_registry_init_overrides: {}
 
 # With enabled uwsgi glance has broken functionality of
 # the interoperable import feature (and maybe smth else)
@@ -284,13 +271,6 @@ glance_services:
     uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
     uwsgi_bind_address: "{{ glance_api_bind_address }}"
     uwsgi_port: "{{ glance_api_service_port }}"
-  glance-registry:
-    group: glance_registry
-    service_name: glance-registry
-    condition: "{{ glance_enable_v2_registry | bool }}"
-    init_config_overrides: "{{ glance_registry_init_overrides }}"
-    start_order: 2
-    execstarts: "{{ glance_bin }}/glance-registry"
 
 # Glance uWSGI settings
 glance_wsgi_processes_max: 16
@@ -302,8 +282,6 @@ glance_glance_api_paste_ini_overrides: {}
 glance_glance_api_conf_overrides: {}
 glance_glance_cache_conf_overrides: {}
 glance_glance_manage_conf_overrides: {}
-glance_glance_registry_paste_ini_overrides: {}
-glance_glance_registry_conf_overrides: {}
 glance_glance_scrubber_conf_overrides: {}
 glance_glance_scheme_json_overrides: {}
 glance_glance_swift_store_conf_overrides: {}

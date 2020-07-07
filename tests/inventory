@@ -36,9 +36,5 @@ openstack1
 [glance_api]
 openstack1
 
-[glance_registry]
-openstack1
-
 [glance_all:children]
 glance_api
-glance_registry
