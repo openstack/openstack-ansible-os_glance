@@ -46,6 +46,9 @@
     - "inventory_hostname == ((groups[glance_services['glance-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
   vars:
     _oslodb_setup_host: "{{ glance_db_setup_host }}"
+    _oslodb_ansible_python_interpreter: "{{ glance_db_setup_python_interpreter }}"
+    _oslodb_setup_endpoint: "{{ glance_galera_address }}"
+    _oslodb_setup_port: "{{ glance_galera_port }}"
     _oslodb_databases:
       - name: "{{ glance_galera_database }}"
         users:
