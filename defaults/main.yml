@@ -272,7 +272,7 @@ glance_services:
     service_name: glance-api
     init_config_overrides: "{{ glance_api_init_overrides }}"
     start_order: 1
-    execstarts: "{{ glance_bin }}/glance-api --config-file /etc/glance/glance.conf"
+    execstarts: "{{ glance_bin }}/glance-api"
     wsgi_app: "{{ glance_use_uwsgi }}"
     wsgi_name: glance-wsgi-api
     uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
