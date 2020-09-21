@@ -108,7 +108,7 @@
     dest: "{{ item.tmp_f }}"
     flat: yes
   changed_when: false
-  run_once: true
+  when: _glance_is_first_play_host
   with_items: "{{ glance_core_files }}"
 
 - name: Copy common config
@@ -130,7 +130,7 @@
     state: absent
   changed_when: false
   delegate_to: localhost
-  run_once: true
+  when: _glance_is_first_play_host
   with_items: "{{ glance_core_files }}"
 
 # NOTE(cloudnull): This will ensure strong permissions on all rootwrap files.
