@@ -26,10 +26,5 @@ properties:
 
 # NOTE(cloudnull): The lxc-openstack AA profile for is used to ensure general
 #                  container functionality typical to the integrated build.
-lxc2_container_config_list:
-  - 'lxc.aa_profile=lxc-openstack'
-
-lxc3_container_config_list:
+lxc_container_config_list:
   - 'lxc.apparmor.profile=lxc-openstack'
-
-lxc_container_config_list: "{{ lookup('pipe', 'lxc-info --version || echo 2.0.0') is version_compare('3.0.0', 'lt') | ternary(lxc2_container_config_list, lxc3_container_config_list) }}"
