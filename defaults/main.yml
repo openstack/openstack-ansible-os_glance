@@ -187,7 +187,7 @@ glance_cors_allowed_origin: "{{ (glance_show_multiple_locations | bool) | ternar
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 glance_api_threads_max: 16
-glance_api_threads: "{{ [[ansible_processor_vcpus|default(2) // 2, 1] | max, glance_api_threads_max] | min }}"
+glance_api_threads: "{{ [[(ansible_processor_vcpus//ansible_processor_threads_per_core)|default(1), 1] | max, glance_api_threads_max] | min }}"
 
 glance_task_executor: taskflow
 glance_digest_algorithm: sha256
@@ -276,7 +276,7 @@ glance_services:
 
 # Glance uWSGI settings
 glance_wsgi_processes_max: 16
-glance_wsgi_processes: "{{ [[ansible_processor_vcpus|default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}"
+glance_wsgi_processes: "{{ [[(ansible_processor_vcpus//ansible_processor_threads_per_core)|default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}"
 glance_wsgi_threads: 1
 
 ## Tunable overrides
