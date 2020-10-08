@@ -83,6 +83,7 @@
   notify:
     - Manage LB
     - Restart glance services
+    - Restart uwsgi services
 
 - name: Deploy Glance image import configuration file
   template:
@@ -92,6 +93,7 @@
   notify:
     - Manage LB
     - Restart glance services
+    - Restart uwsgi services
 
 # NOTE(cloudnull): This is using "cp" instead of copy with a remote_source
 #                  because we only want to copy the original files once. and we
@@ -123,6 +125,7 @@
   with_items: "{{ glance_core_files }}"
   notify:
     - Restart glance services
+    - Restart uwsgi services
 
 - name: Cleanup fetched temp files
   file:
