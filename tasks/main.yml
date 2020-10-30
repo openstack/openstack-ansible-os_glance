@@ -86,7 +86,7 @@
     name: ceph_client
   vars:
     openstack_service_system_user: "{{ glance_system_user_name }}"
-    openstack_service_venv_bin: "{{ glance_bin }}"
+    openstack_service_venv_bin: "{{ (glance_install_method == 'source') | ternary(glance_bin, '') }}"
   when:
     - "glance_services['glance-api']['group'] in group_names"
     - "'rbd' in ([glance_default_store] + glance_additional_stores)"
