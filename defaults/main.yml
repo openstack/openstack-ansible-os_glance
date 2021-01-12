@@ -34,7 +34,6 @@ glance_git_repo: https://opendev.org/openstack/glance
 glance_git_install_branch: master
 glance_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 glance_git_constraints:
-  - "git+{{ glance_git_repo }}@{{ glance_git_install_branch }}#egg=glance"
   - "--constraint {{ glance_upper_constraints_url }}"
 
 glance_pip_install_args: "{{ pip_install_options | default('') }}"
@@ -231,8 +230,8 @@ glance_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
 
 # Common pip packages
 glance_pip_packages:
+  - "git+{{ glance_git_repo }}@{{ glance_git_install_branch }}#egg=glance"
   - cryptography
-  - glance
   - keystonemiddleware
   - os-brick
   - oslo.rootwrap
