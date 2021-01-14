@@ -21,7 +21,10 @@ transport_url = {{ glance_oslomsg_rpc_transport }}://{% for host in glance_oslom
 
 delayed_delete = False
 scrub_time = 43200
+
 image_cache_dir = {{ glance_system_user_home }}/cache/
+image_cache_stall_time = {{ glance_image_cache_stall_time }}
+image_cache_max_size = {{ glance_image_cache_max_size }}
 
 # defaults to true if RBD is used as default store
 show_image_direct_url = {{ glance_show_image_direct_url }}

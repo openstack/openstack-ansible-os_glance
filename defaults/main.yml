@@ -177,6 +177,7 @@ glance_keystone_auth_plugin: password
 
 ## Glance config
 glance_image_cache_max_size: 10737418240
+glance_image_cache_stall_time: 86400
 
 # CORS options
 glance_cors_allowed_origin: "{{ (glance_show_multiple_locations | bool) | ternary(openstack_service_publicuri_proto | default('http') + '://' + external_lb_vip_address, None) }}"
