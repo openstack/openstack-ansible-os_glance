@@ -18,7 +18,7 @@
     name: "{{ item.service_name }}"
     enabled: yes
     state: "stopped"
-    daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
+    daemon_reload: "{{ (ansible_facts['service_mgr'] == 'systemd') | ternary('yes', omit) }}"
   with_items: "{{ filtered_glance_services }}"
   register: _stop
   until: _stop is success
@@ -33,7 +33,7 @@
     name: "{{ item.service_name }}"
     enabled: yes
     state: "started"
-    daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
+    daemon_reload: "{{ (ansible_facts['service_mgr'] == 'systemd') | ternary('yes', omit) }}"
   with_items: "{{ filtered_glance_services }}"
   register: _start
   until: _start is success

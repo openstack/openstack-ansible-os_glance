@@ -22,7 +22,7 @@
     - block:
       - name: Install NFS packages
         package:
-          name: "{{ nfs_package[ansible_distribution | lower] }}"
+          name: "{{ nfs_package[ansible_facts['distribution'] | lower] }}"
           state: present
 
       - name: create the system group for nfs
