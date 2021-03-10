@@ -26,7 +26,7 @@ glance_devel_distro_packages:
 
 glance_service_distro_packages:
   - openstack-glance
-  - "{{ ansible_facts['distribution_major_version'] is version('8', '<') | ternary('systemd-python', 'python3-systemd') }}"
+  - python3-systemd
 
 glance_oslomsg_amqp1_distro_packages:
   - cyrus-sasl-lib
