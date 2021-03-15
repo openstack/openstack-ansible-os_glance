@@ -79,4 +79,3 @@
     nfs_package:
       ubuntu: "nfs-kernel-server"
       centos: "nfs-utils"
-      suse: "nfs-kernel-server"
