@@ -24,7 +24,7 @@ glance_venv_python_executable: "{{ openstack_venv_python_executable | default('p
 # for the service setup. The host must already have
 # clouds.yaml properly configured.
 glance_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
-glance_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((glance_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+glance_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((glance_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
@@ -119,7 +119,7 @@ glance_oslomsg_amqp1_enabled: "{{ glance_oslomsg_rpc_transport == 'amqp' }}"
 
 ## Database info
 glance_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
-glance_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((glance_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+glance_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((glance_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 glance_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 glance_galera_database: glance
 glance_galera_user: glance
