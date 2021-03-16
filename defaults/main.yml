@@ -193,7 +193,7 @@ glance_digest_algorithm: sha256
 glance_http_keepalive: True
 
 ## Glance policy
-glance_policy_file: policy.json
+glance_policy_file: policy.yaml
 glance_policy_default_rule: default
 glance_policy_dirs: policy.d
 
