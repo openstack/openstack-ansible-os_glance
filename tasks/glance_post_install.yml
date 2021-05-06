@@ -75,15 +75,34 @@
       dest: "{{ glance_etc_dir }}/schema-image.json"
       config_overrides: "{{ glance_glance_scheme_json_overrides }}"
       config_type: "json"
-    - dest: "{{ glance_etc_dir }}/policy.json"
-      config_overrides: "{{ glance_policy_overrides }}"
-      config_type: "json"
-      condition: "{{ (glance_policy_overrides) or (glance_policy_content) }}"
-      content: "{{ glance_policy_content }}"
   notify:
     - Manage LB
     - Restart glance services
     - Restart uwsgi services
+
+- name: Implement policy.yaml if there are overrides configured
+  config_template:
+    dest: "{{ glance_etc_dir }}/{{ glance_policy_file }}"
+    config_overrides: "{{ glance_policy_overrides }}"
+    config_type: "yaml"
+    owner: "root"
+    group: "{{ glance_system_group_name }}"
+    mode: "0640"
+    content: "{{ glance_policy_content }}"
+  when:
+    - (glance_policy_overrides | length > 0) or (glance_policy_content | length > 0)
+  tags:
+    - glance-policy-override
+
+- name: Remove legacy policy.yaml file
+  file:
+    path: "{{ glance_etc_dir }}/{{ glance_policy_file }}"
+    state: absent
+  when:
+    - glance_policy_overrides | length == 0
+    - glance_policy_content | length == 0
+  tags:
+    - glance-policy-override
 
 - name: Deploy Glance image import configuration file
   template:
