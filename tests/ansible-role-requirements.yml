@@ -63,3 +63,7 @@
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
   version: master
+- name: pki
+  src: https://opendev.org/openstack/ansible-role-pki
+  scm: git
+  version: master
