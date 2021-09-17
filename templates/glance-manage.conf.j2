@@ -6,4 +6,4 @@ use_journal = True
 fatal_deprecations = {{ glance_fatal_deprecations }}
 
 [database]
-connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8{% if glance_galera_use_ssl | bool %}&ssl_ca={{ glance_galera_ssl_ca_cert }}{% endif %}
+connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8{% if glance_galera_use_ssl | bool %}&ssl_verify_cert=true{% if glance_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ glance_galera_ssl_ca_cert }}{% endif %}{% endif %}
