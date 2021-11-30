@@ -40,7 +40,7 @@
     - glance-post-install
 
 - name: Deploy Glance configuration files
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ item.src | default(omit) }}"
     content: "{{ item.content | default(omit) }}"
     dest: "{{ item.dest }}"
@@ -81,7 +81,7 @@
     - Restart uwsgi services
 
 - name: Implement policy.yaml if there are overrides configured
-  config_template:
+  openstack.config_template.config_template:
     dest: "{{ glance_etc_dir }}/{{ glance_policy_file }}"
     config_overrides: "{{ glance_policy_overrides }}"
     config_type: "yaml"
@@ -133,7 +133,7 @@
   with_items: "{{ glance_core_files }}"
 
 - name: Copy common config
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ item.tmp_f }}"
     dest: "{{ item.target_f_override | default(item.target_f) }}"
     owner: "{{ item.owner | default('root') }}"
