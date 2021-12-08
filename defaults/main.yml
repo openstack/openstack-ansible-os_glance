@@ -289,11 +289,15 @@ glance_services:
     uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
     uwsgi_bind_address: "{{ glance_api_bind_address }}"
     uwsgi_port: "{{ glance_api_service_port }}"
+    uwsgi_tls: "{{ glance_backend_ssl | ternary(glance_uwsgi_tls, {}) }}"
 
 # Glance uWSGI settings
 glance_wsgi_processes_max: 16
 glance_wsgi_processes: "{{ [[(ansible_facts['processor_vcpus']//ansible_facts['processor_threads_per_core'])|default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}"
 glance_wsgi_threads: 1
+glance_uwsgi_tls:
+  crt: "{{ glance_ssl_cert }}"
+  key: "{{ glance_ssl_key }}"
 
 ## Tunable overrides
 glance_glance_api_paste_ini_overrides: {}
@@ -309,3 +313,51 @@ glance_api_uwsgi_ini_overrides: {}
 
 # Specify path on the local filesystem for glance-image-import.conf
 #glance_glance_image_import_conf_location: /path/to/local/glance-image-import.conf
+
+###
+### Backend TLS
+###
+
+# Define if communication between haproxy and service backends should be
+# encrypted with TLS(works only with uWSGI).
+glance_backend_ssl: "{{ glance_use_uwsgi | ternary(openstack_service_backend_ssl | default(False), False) }}"
+
+# Storage location for SSL certificate authority
+glance_pki_dir: "{{ openstack_pki_dir | default('/etc/openstack_deploy/pki') }}"
+
+# Delegated host for operating the certificate authority
+glance_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
+
+# Glance server certificate
+glance_pki_keys_path: "{{ glance_pki_dir ~ '/certs/private/' }}"
+glance_pki_certs_path: "{{ glance_pki_dir ~ '/certs/certs/' }}"
+glance_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
+glance_pki_regen_cert: ''
+glance_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+glance_pki_certificates:
+  - name: "glance_{{ ansible_facts['hostname'] }}"
+    provider: ownca
+    cn: "{{ ansible_facts['hostname'] }}"
+    san: "{{ glance_pki_san }}"
+    signed_by: "{{ glance_pki_intermediate_cert_name }}"
+
+# Glance destination files for SSL certificates
+glance_ssl_cert: /etc/glance/glance.pem
+glance_ssl_key: /etc/glance/glance.key
+
+# Installation details for SSL certificates
+glance_pki_install_certificates:
+  - src: "{{ glance_user_ssl_cert | default(glance_pki_certs_path ~ 'glance_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+    dest: "{{ glance_ssl_cert }}"
+    owner: "{{ glance_system_user_name }}"
+    group: "{{ glance_system_user_name }}"
+    mode: "0644"
+  - src: "{{ glance_user_ssl_key | default(glance_pki_keys_path ~ 'glance_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    dest: "{{ glance_ssl_key }}"
+    owner: "{{ glance_system_user_name }}"
+    group: "{{ glance_system_user_name }}"
+    mode: "0600"
+
+# Define user-provided SSL certificates
+#glance_user_ssl_cert: <path to cert on ansible deployment host>
+#glance_user_ssl_key: <path to cert on ansible deployment host>
