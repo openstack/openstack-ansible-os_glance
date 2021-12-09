@@ -43,15 +43,6 @@
     createhome: "yes"
     home: "{{ glance_system_user_home }}"
 
-- name: Create glance NFS mount point(s)
-  file:
-    path: "{{ item.local_path }}"
-    state: directory
-    mode: "0755"
-    owner: "{{ item.owner | default(glance_system_user_name) }}"
-    group: "{{ item.group | default(glance_system_group_name) }}"
-  with_items: "{{ glance_nfs_client }}"
-
 # NOTE(cloudnull): During an upgrade the local directory may exist on a source
 #                  install. If the directory does exist it will need to be
 #                  removed. This is required on source installs because the
