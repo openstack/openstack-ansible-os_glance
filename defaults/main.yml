@@ -254,6 +254,7 @@ glance_pip_packages:
   - python-swiftclient
   - systemd-python
   - warlock
+  - "{{ ('s3' in _glance_available_stores) | ternary('boto3', '') }}"
 
 # Specific pip packages provided by the user
 glance_user_pip_packages: []
