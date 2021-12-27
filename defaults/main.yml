@@ -135,7 +135,6 @@ glance_db_max_pool_size: "{{ openstack_db_max_pool_size | default('5') }}"
 glance_db_pool_timeout: "{{ openstack_db_pool_timeout | default('30') }}"
 glance_db_connection_recycle_time: "{{ openstack_db_connection_recycle_time | default('600') }}"
 
-glance_role_name: admin
 glance_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 glance_api_service_port: 9292
 
@@ -149,10 +148,19 @@ glance_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(gl
 glance_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(glance_service_proto) }}"
 glance_service_type: image
 glance_service_description: "Glance Image Service"
-glance_service_user_name: glance
 glance_service_project_name: service
 glance_service_project_domain_id: default
+# List of roles assigned to glance_service_user_name
+glance_service_role_names:
+  - admin
+  - service
+
+# List of roles for which service tokens will be accepted
+glance_service_token_roles:
+  - service
+glance_service_token_roles_required: "{{ openstack_service_token_roles_required | default(True) }}"
 glance_service_user_domain_id: default
+glance_service_user_name: glance
 glance_service_publicuri: "{{ glance_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ glance_service_port }}"
 glance_service_publicurl: "{{ glance_service_publicuri }}"
 glance_service_internaluri: "{{ glance_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ glance_service_port }}"

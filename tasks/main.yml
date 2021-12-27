@@ -117,7 +117,7 @@
     _service_users:
       - name: "{{ glance_service_user_name }}"
         password: "{{ glance_service_password }}"
-        role: "{{ glance_role_name }}"
+        role: "{{ glance_service_role_names }}"
     _service_catalog:
       - name: "{{ glance_service_name }}"
         type: "{{ glance_service_type }}"

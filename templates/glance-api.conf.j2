@@ -53,6 +53,10 @@ username = {{ glance_service_user_name }}
 password = {{ glance_service_password }}
 region_name = {{ keystone_service_region }}
 
+service_token_roles_required = {{ glance_service_token_roles_required | bool }}
+service_token_roles = {{ glance_service_token_roles | join(',') }}
+service_type = {{ glance_service_type }}
+
 memcached_servers = {{ glance_memcached_servers }}
 
 token_cache_time = 300
