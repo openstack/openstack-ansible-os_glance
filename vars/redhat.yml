@@ -33,9 +33,11 @@ glance_oslomsg_amqp1_distro_packages:
   - cyrus-sasl-plain
   - cyrus-sasl-md5
 
-glance_core_files:
+_glance_core_files:
   - tmp_f: "/tmp/glance-api-dist-paste.ini"
-    target_f: "{{ (glance_install_method == 'source') | ternary((glance_etc_dir ~ '/glance-api-paste.ini'), '/usr/share/glance/glance-api-dist-paste.ini') }}"
+    target_f: "{{ glance_etc_dir }}/glance-api-paste.ini"
     target_f_override: "{{ glance_etc_dir }}/glance-api-paste.ini"
     config_overrides: "{{ glance_glance_api_paste_ini_overrides }}"
     config_type: "ini"
+
+glance_core_files: "{{ (glance_install_method == 'source') | ternary(_glance_core_files, []) }}"
