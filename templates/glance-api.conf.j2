@@ -79,7 +79,7 @@ default_backend = {{ glance_default_store }}
 
 {% if 'file' in _glance_available_stores %}
 [file]
-filesystem_store_datadir = {{ glance_system_user_home }}/{{ glance_nfs_local_directory }}/
+filesystem_store_datadir = {{ glance_system_user_home }}/{{ glance_images_local_directory }}/
 {% endif %}
 
 {% if 'swift' in _glance_available_stores %}

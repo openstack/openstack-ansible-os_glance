@@ -15,9 +15,8 @@
 
 # Force glance to use file by default which will be an NFS mount point.
 glance_default_store: file
-glance_nfs_client:
-  - server: "10.1.0.1"
-    remote_path: "/srv/nfs/glance"
-    local_path: "/var/lib/glance/images"
+glance_remote_client:
+  - what: "10.1.0.1:/srv/nfs/glance"
+    where: "/var/lib/glance/images"
     type: "nfs"
     options: "_netdev,auto"
