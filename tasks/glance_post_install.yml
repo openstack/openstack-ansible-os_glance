@@ -130,6 +130,7 @@
     flat: yes
   changed_when: false
   run_once: true
+  check_mode: no
   with_items: "{{ glance_core_files }}"
 
 - name: Copy common config
