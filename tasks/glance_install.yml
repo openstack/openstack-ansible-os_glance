@@ -101,7 +101,7 @@
     - path: "{{ glance_system_user_home }}/cache/api"
       mode: "0700"
     - path: "{{ glance_system_user_home }}/scrubber"
-    - path: "{{ glance_system_user_home }}/{{ glance_nfs_local_directory }}"
+    - path: "{{ glance_system_user_home }}/{{ glance_images_local_directory }}"
       mode: "0755"
 
 - name: Install distro packages

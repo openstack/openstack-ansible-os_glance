@@ -207,17 +207,16 @@ glance_policy_dirs: policy.d
 
 
 # Define nfs information to enable nfs shares as mounted directories for
-# glance. The ``glance_nfs_client`` value is a list of dictionaries that must
-# be filled out completely to enable the persistent NFS mounts.
-glance_nfs_local_directory: "images"
-glance_nfs_client: []
+# glance. The ``glance_remote_client`` value is a list of dictionaries that must
+# be filled out completely to enable the persistent remote FS mounts (like NFS).
+glance_images_local_directory: "{{ glance_nfs_local_directory | default('images') }}"
+glance_remote_client: "{{ glance_nfs_client | default([]) }}"
 
 # Example of the expected dict structure:
 #
-# glance_nfs_client:
-#   - server: "127.0.0.1"                   ## Hostname or IP address of NFS Server
-#     remote_path: "/images"                ## Remote path from the NFS server's export
-#     local_path: "/var/lib/glance/images"  ## Local path on machine
+# glance_remote_client:
+#   - what: "127.0.0.1:/images"             ## Hostname or IP address of Server and path on it
+#     where: "/var/lib/glance/images"       ## Local path on machine
 #     type: "nfs"                           ## This can be nfs or nfs4
 #     options: "_netdev,auto"               ## Mount options
 #     config_overrides: "{}"                ## Override dictionary for unit file
