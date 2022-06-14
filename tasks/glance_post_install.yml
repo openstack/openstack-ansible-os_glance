@@ -76,7 +76,6 @@
       config_overrides: "{{ glance_glance_scheme_json_overrides }}"
       config_type: "json"
   notify:
-    - Manage LB
     - Restart glance services
     - Restart uwsgi services
 
@@ -110,7 +109,6 @@
     dest: "{{ glance_etc_dir }}/glance-image-import.conf"
   when: glance_glance_image_import_conf_location is defined
   notify:
-    - Manage LB
     - Restart glance services
     - Restart uwsgi services
 
