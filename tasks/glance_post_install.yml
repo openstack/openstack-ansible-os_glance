@@ -171,7 +171,7 @@
   vars:
     systemd_mounts:
       - config_overrides: "{{ mount_var.config_overrides | default({}) }}"
-        what: "{{ mount_var.what | default(mount_var.server ~ ':' ~ mount_var.remote_path) }}"
+        what: "{{ mount_var.what | default(mount_var.server | default('') ~ ':' ~ mount_var.remote_path | default('')) }}"
         where: "{{ mount_var.where | default(mount_var.local_path) }}"
         type: "{{ mount_var.type }}"
         options: "{{ mount_var.options }}"
