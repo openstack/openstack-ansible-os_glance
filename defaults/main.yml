@@ -195,7 +195,7 @@ glance_image_cache_max_size: 10737418240
 glance_image_cache_stall_time: 86400
 
 # CORS options
-glance_cors_allowed_origin: "{{ (glance_show_multiple_locations | bool) | ternary(openstack_service_publicuri_proto | default('http') + '://' + external_lb_vip_address, None) }}"
+glance_cors_allowed_origin: "{{ openstack_service_publicuri_proto | default('http') + '://' + external_lb_vip_address }}"
 # If ``glance_api_workers`` is unset the system will use half the number of available VCPUS to
 # compute the number of api workers to use.
 # glance_api_workers: 16
