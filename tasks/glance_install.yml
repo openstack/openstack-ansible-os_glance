@@ -114,6 +114,8 @@
   until: install_packages is success
   retries: 5
   delay: 2
+  notify:
+    - "Restart glance services"
 
 - name: Install the python venv
   import_role:
@@ -131,21 +133,9 @@
              union(((glance_oslomsg_amqp1_enabled | bool) | ternary(glance_optional_oslomsg_amqp1_pip_packages, []))) }}
     venv_facts_when_changed:
       - section: "glance"
-        option: "need_service_restart"
-        value: True
-      - section: "glance"
         option: "venv_tag"
         value: "{{ glance_venv_tag }}"
   when: glance_install_method == 'source'
-
-- name: Record the need for a service restart
-  ini_file:
-    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-    section: "glance"
-    option: "need_service_restart"
-    value: true
-  when: (install_packages is changed) or
-        ('need_service_restart' not in ansible_local['openstack_ansible']['glance'])
 
 - name: Run the systemd service role
   include_role:
