@@ -162,8 +162,8 @@
     systemd_TasksAccounting: true
     systemd_services:
       - service_name: "{{ service_var.service_name }}"
-        enabled: yes
-        state: started
+        enabled: "{{ service_var.enabled | default(True) }}"
+        state: "{{ service_var.state | default('started') }}"
         execstarts: "{{ service_var.execstarts }}"
         execreloads: "{{ service_var.execreloads | default([]) }}"
         config_overrides: "{{ service_var.init_config_overrides }}"
