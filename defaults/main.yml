@@ -273,7 +273,8 @@ glance_api_init_overrides: {}
 
 # With enabled uwsgi glance has broken functionality of
 # the interoperable import feature (and maybe smth else)
-glance_use_uwsgi: True
+# We don't use uwsgi if ceph is used to prevent chunking issues
+glance_use_uwsgi: "{{ ('ceph' not in _glance_available_stores) }}"
 
 ## Service Names
 glance_services:
