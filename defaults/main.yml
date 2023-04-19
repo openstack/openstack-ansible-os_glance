@@ -81,6 +81,7 @@ glance_default_store: file
 glance_additional_stores:
   - http
   - cinder
+glance_available_stores: "{{ [ glance_default_store ] + glance_additional_stores }}"
 glance_flavor: "{% if glance_default_store == 'rbd' %}keystone{% else %}keystone+cachemanagement{% endif %}"
 glance_show_image_direct_url: "{{ glance_default_store == 'rbd' }}"
 glance_show_multiple_locations: "{{ glance_default_store == 'rbd' }}"
@@ -261,7 +262,7 @@ glance_pip_packages:
   - python-swiftclient
   - systemd-python
   - warlock
-  - "{{ ('s3' in _glance_available_stores) | ternary('boto3', '') }}"
+  - "{{ ('s3' in glance_available_stores) | ternary('boto3', '') }}"
 
 # Specific pip packages provided by the user
 glance_user_pip_packages: []
@@ -274,7 +275,7 @@ glance_api_init_overrides: {}
 # With enabled uwsgi glance has broken functionality of
 # the interoperable import feature (and maybe smth else)
 # We don't use uwsgi if ceph is used to prevent chunking issues
-glance_use_uwsgi: "{{ ('ceph' not in _glance_available_stores) }}"
+glance_use_uwsgi: "{{ ('ceph' not in glance_available_stores) }}"
 
 ## Service Names
 glance_services:

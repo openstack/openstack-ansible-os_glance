@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_glance_available_stores: "{{ [ glance_default_store ] + glance_additional_stores }}"
 _glance_is_first_play_host: "{{ (glance_services['glance-api']['group'] in group_names and inventory_hostname == (groups[glance_services['glance-api']['group']] | intersect(ansible_play_hosts)) | first) | bool }}"
 
 #

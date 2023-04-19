@@ -28,7 +28,7 @@ image_cache_max_size = {{ glance_image_cache_max_size }}
 show_image_direct_url = {{ glance_show_image_direct_url }}
 show_multiple_locations = {{ glance_show_multiple_locations }}
 
-enabled_backends = {% for backend in _glance_available_stores %}{{ ('name' in backend) | ternary(backend['name'], backend) }}:{{ ('type' in backend) | ternary(backend['type'], backend) }}{% if not loop.last %},{% endif %}{% endfor %}
+enabled_backends = {% for backend in glance_available_stores %}{{ ('name' in backend) | ternary(backend['name'], backend) }}:{{ ('type' in backend) | ternary(backend['type'], backend) }}{% if not loop.last %},{% endif %}{% endfor %}
 
 
 [task]
@@ -81,12 +81,12 @@ flavor = {{ glance_flavor }}
 [glance_store]
 default_backend = {{ glance_default_store }}
 
-{% if 'file' in _glance_available_stores %}
+{% if 'file' in glance_available_stores %}
 [file]
 filesystem_store_datadir = {{ glance_system_user_home }}/{{ glance_images_local_directory }}/
 {% endif %}
 
-{% if 'swift' in _glance_available_stores %}
+{% if 'swift' in glance_available_stores %}
 [swift]
 swift_store_config_file = {{ glance_etc_dir }}/glance-swift-store.conf
 default_swift_reference = swift1
@@ -100,7 +100,7 @@ swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
 {% endif %}
 
-{% if 'rbd' in _glance_available_stores %}
+{% if 'rbd' in glance_available_stores %}
 [rbd]
 rbd_store_pool = {{ glance_rbd_store_pool }}
 rbd_store_user = {{ glance_rbd_store_user }}

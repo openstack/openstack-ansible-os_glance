@@ -155,7 +155,7 @@
     openstack_service_venv_bin: "{{ (glance_install_method == 'source') | ternary(glance_bin, '') }}"
   when:
     - "glance_services['glance-api']['group'] in group_names"
-    - "'rbd' in _glance_available_stores"
+    - "'rbd' in glance_available_stores"
   tags:
     - ceph
 
