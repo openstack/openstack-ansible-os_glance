@@ -28,6 +28,7 @@
     - "Restart glance services"
     - "venv changed"
     - "systemd service changed"
+    - "cert installed"
 
 - name: Start services
   service:
@@ -44,3 +45,4 @@
     - "Restart glance services"
     - "venv changed"
     - "systemd service changed"
+    - "cert installed"

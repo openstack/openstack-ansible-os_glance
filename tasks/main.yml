@@ -90,6 +90,26 @@
   tags:
     - glance-install
 
+- name: Create and install SSL certificates
+  include_role:
+    name: pki
+    tasks_from: main_certs.yml
+    apply:
+      tags:
+        - glance-config
+        - pki
+  vars:
+    pki_setup_host: "{{ glance_pki_setup_host }}"
+    pki_dir: "{{ glance_pki_dir }}"
+    pki_create_certificates: "{{ glance_user_ssl_cert is not defined and glance_user_ssl_key is not defined }}"
+    pki_regen_cert: "{{ glance_pki_regen_cert }}"
+    pki_certificates: "{{ glance_pki_certificates }}"
+    pki_install_certificates: "{{ glance_pki_install_certificates }}"
+  when:
+    - glance_backend_ssl
+  tags:
+    - always
+
 - import_tasks: glance_post_install.yml
   tags:
     - glance-config
