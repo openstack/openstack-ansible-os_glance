@@ -19,9 +19,9 @@
   file:
     path: "{{ item.path | default(omit) }}"
     state: "directory"
-    owner: "{{ item.owner|default(glance_system_user_name) }}"
-    group: "{{ item.group|default(glance_system_group_name) }}"
-    mode: "{{ item.mode | default(omit) }}"
+    owner: "{{ item.owner | default(glance_system_user_name) }}"
+    group: "{{ item.group | default(glance_system_group_name) }}"
+    mode: "{{ item.mode | default('0755') }}"
   loop:
     - path: "/etc/glance/rootwrap.d"
       owner: "root"
@@ -33,6 +33,7 @@
     dest: "/etc/glance/rootwrap.d/"
     owner: "root"
     group: "root"
+    mode: "0644"
   with_fileglob:
     - rootwrap.d/*
   tags:
@@ -107,6 +108,9 @@
   template:
     src: "{{ glance_glance_image_import_conf_location }}"
     dest: "{{ glance_etc_dir }}/glance-image-import.conf"
+    mode: "0640"
+    owner: root
+    group: "{{ glance_system_group_name }}"
   when: glance_glance_image_import_conf_location is defined
   notify:
     - Restart glance services

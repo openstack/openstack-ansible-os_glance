@@ -19,13 +19,14 @@
     section: "glance"
     option: "install_method"
     value: "{{ glance_install_method }}"
+    mode: "0644"
 
 - name: Refresh local facts to ensure the glance section is present
   setup:
     filter: ansible_local
     gather_subset: "!all"
 
-- name: create the system group
+- name: Create the system group
   group:
     name: "{{ glance_system_group_name }}"
     gid: "{{ glance_system_group_gid | default(omit) }}"
@@ -70,8 +71,8 @@
     src: "{{ item.src | default(omit) }}"
     dest: "{{ item.dest | default(omit) }}"
     state: "{{ item.state | default('directory') }}"
-    owner: "{{ item.owner|default(glance_system_user_name) }}"
-    group: "{{ item.group|default(glance_system_group_name) }}"
+    owner: "{{ item.owner | default(glance_system_user_name) }}"
+    group: "{{ item.group | default(glance_system_group_name) }}"
     mode: "{{ item.mode | default(omit) }}"
     force: "{{ item.force | default(omit) }}"
   when:
@@ -146,10 +147,10 @@
     systemd_tempd_prefix: openstack
     systemd_slice_name: glance
     systemd_lock_path: /var/lock/glance
-    systemd_CPUAccounting: true
-    systemd_BlockIOAccounting: true
-    systemd_MemoryAccounting: true
-    systemd_TasksAccounting: true
+    systemd_service_cpu_accounting: true
+    systemd_service_block_io_accounting: true
+    systemd_service_memory_accounting: true
+    systemd_service_tasks_accounting: true
     systemd_services:
       - service_name: "{{ service_var.service_name }}"
         enabled: "{{ service_var.enabled | default(True) }}"

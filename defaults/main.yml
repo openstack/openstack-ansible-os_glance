@@ -24,7 +24,11 @@ glance_venv_python_executable: "{{ openstack_venv_python_executable | default('p
 # for the service setup. The host must already have
 # clouds.yaml properly configured.
 glance_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
-glance_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((glance_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
+glance_service_setup_host_python_interpreter: >-
+  {{
+    openstack_service_setup_host_python_interpreter | default(
+      (glance_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable']))
+  }}
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
@@ -32,7 +36,8 @@ glance_package_state: "{{ package_state | default('latest') }}"
 
 glance_git_repo: https://opendev.org/openstack/glance
 glance_git_install_branch: master
-glance_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
+glance_upper_constraints_url: >-
+  {{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}
 glance_git_constraints:
   - "--constraint {{ glance_upper_constraints_url }}"
 
@@ -81,7 +86,7 @@ glance_default_store: file
 glance_additional_stores:
   - http
   - cinder
-glance_available_stores: "{{ [ glance_default_store ] + glance_additional_stores }}"
+glance_available_stores: "{{ [glance_default_store] + glance_additional_stores }}"
 glance_flavor: "{% if glance_default_store == 'rbd' %}keystone{% else %}keystone+cachemanagement{% endif %}"
 glance_show_image_direct_url: "{{ glance_default_store == 'rbd' }}"
 glance_show_multiple_locations: "{{ glance_default_store == 'rbd' }}"
@@ -124,7 +129,11 @@ glance_oslomsg_amqp1_enabled: "{{ glance_oslomsg_rpc_transport == 'amqp' }}"
 
 ## Database info
 glance_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
-glance_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((glance_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
+glance_db_setup_python_interpreter: >-
+  {{
+    openstack_db_setup_python_interpreter | default(
+      (glance_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable']))
+  }}
 glance_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 glance_galera_database: glance
 glance_galera_user: glance
@@ -203,7 +212,8 @@ glance_cors_allowed_origin: "{{ openstack_service_publicuri_proto | default('htt
 
 ## Cap the maximum number of threads / workers when a user value is unspecified.
 glance_api_threads_max: 16
-glance_api_threads: "{{ [[(ansible_facts['processor_vcpus']//ansible_facts['processor_threads_per_core'])|default(1), 1] | max, glance_api_threads_max] | min }}"
+glance_api_threads: >-
+  {{ [[(ansible_facts['processor_vcpus'] // ansible_facts['processor_threads_per_core']) | default(1), 1] | max, glance_api_threads_max] | min }}
 
 glance_task_executor: taskflow
 glance_digest_algorithm: sha256
@@ -233,9 +243,9 @@ glance_remote_client: "{{ glance_nfs_client | default([]) }}"
 ## Policy vars
 # Provide a list of access controls to update the default policy.json with. These changes will be merged
 # with the access controls in the default policy.json. E.g.
-#glance_policy_overrides:
-#  "add_image": ""
-#  "delete_image": ""
+# glance_policy_overrides:
+#   "add_image": ""
+#   "delete_image": ""
 
 ## Ceph rbd Options
 glance_ceph_client: glance
@@ -294,7 +304,8 @@ glance_services:
 
 # Glance uWSGI settings
 glance_wsgi_processes_max: 16
-glance_wsgi_processes: "{{ [[(ansible_facts['processor_vcpus']//ansible_facts['processor_threads_per_core'])|default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}"
+glance_wsgi_processes: >-
+  {{ [[(ansible_facts['processor_vcpus'] // ansible_facts['processor_threads_per_core']) | default(1), 1] | max * 2, glance_wsgi_processes_max] | min }}
 glance_wsgi_threads: 1
 glance_uwsgi_tls:
   crt: "{{ glance_ssl_cert }}"
@@ -313,7 +324,7 @@ glance_policy_content: {}
 glance_api_uwsgi_ini_overrides: {}
 
 # Specify path on the local filesystem for glance-image-import.conf
-#glance_glance_image_import_conf_location: /path/to/local/glance-image-import.conf
+# glance_glance_image_import_conf_location: /path/to/local/glance-image-import.conf
 
 ###
 ### Backend TLS
@@ -360,5 +371,5 @@ glance_pki_install_certificates:
     mode: "0600"
 
 # Define user-provided SSL certificates
-#glance_user_ssl_cert: <path to cert on ansible deployment host>
-#glance_user_ssl_key: <path to cert on ansible deployment host>
+# glance_user_ssl_cert: <path to cert on ansible deployment host>
+# glance_user_ssl_key: <path to cert on ansible deployment host>
