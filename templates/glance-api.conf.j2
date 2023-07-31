@@ -35,7 +35,7 @@ enabled_backends = {% for backend in glance_available_stores %}{{ ('name' in bac
 task_executor = {{ glance_task_executor }}
 
 [database]
-connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}/{{ glance_galera_database }}?charset=utf8{% if glance_galera_use_ssl | bool %}&ssl_verify_cert=true{% if glance_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ glance_galera_ssl_ca_cert }}{% endif %}{% endif +%}
+connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}:{{ glance_galera_port }}/{{ glance_galera_database }}?charset=utf8{% if glance_galera_use_ssl | bool %}&ssl_verify_cert=true{% if glance_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ glance_galera_ssl_ca_cert }}{% endif %}{% endif +%}
 max_overflow = {{ glance_db_max_overflow }}
 max_pool_size = {{ glance_db_max_pool_size }}
 pool_timeout = {{ glance_db_pool_timeout }}
