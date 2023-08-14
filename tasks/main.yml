@@ -43,7 +43,8 @@
   tags:
     - always
 
-- include_role:
+- name: Including osa.db_setup role
+  include_role:
     name: openstack.osa.db_setup
     apply:
       tags:
@@ -64,7 +65,8 @@
   tags:
     - always
 
-- include_role:
+- name: Including osa.mq_setup role
+  include_role:
     name: openstack.osa.mq_setup
     apply:
       tags:
@@ -86,7 +88,8 @@
   tags:
     - always
 
-- import_tasks: glance_install.yml
+- name: Importing glance_install tasks
+  import_tasks: glance_install.yml
   tags:
     - glance-install
 
@@ -110,17 +113,20 @@
   tags:
     - always
 
-- import_tasks: glance_post_install.yml
+- name: Importing glance_post_install tasks
+  import_tasks: glance_post_install.yml
   tags:
     - glance-config
 
-- import_tasks: glance_db_sync.yml
+- name: Importing glance_db_sync tasks
+  import_tasks: glance_db_sync.yml
   when:
     - "_glance_is_first_play_host"
   tags:
     - glance-config
 
-- include_role:
+- name: Including osa.service_setup role
+  include_role:
     name: openstack.osa.service_setup
     apply:
       tags:

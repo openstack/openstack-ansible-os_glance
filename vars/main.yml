@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-_glance_is_first_play_host: "{{ (glance_services['glance-api']['group'] in group_names and inventory_hostname == (groups[glance_services['glance-api']['group']] | intersect(ansible_play_hosts)) | first) | bool }}"
+_glance_is_first_play_host: >-
+  {{
+    (glance_services['glance-api']['group'] in group_names and
+      inventory_hostname == (groups[glance_services['glance-api']['group']] | intersect(ansible_play_hosts)) | first) | bool
+  }}
 
 #
 # Compile a list of the services on a host based on whether
