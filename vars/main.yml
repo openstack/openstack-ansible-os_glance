@@ -61,7 +61,7 @@ uwsgi_glance_services: |-
 glance_mount_points: |-
   {% set mps = [] %}
   {% for mp in glance_remote_client %}
-  {%   set _ = mps.append(mp.where | default(mount_var.local_path)) %}
+  {%   set _ = mps.append(mp.where | default(mp.local_path)) %}
   {% endfor %}
   {{ mps }}
 
