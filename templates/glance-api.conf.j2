@@ -16,7 +16,7 @@ cinder_catalog_info = volumev3:cinderv3:internalURL
 
 enable_v2_api = {{ glance_enable_v2_api | bool }}
 
-transport_url = {{ glance_oslomsg_rpc_transport }}://{% for host in glance_oslomsg_rpc_servers.split(',') %}{{ glance_oslomsg_rpc_userid }}:{{ glance_oslomsg_rpc_password }}@{{ host }}:{{ glance_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ glance_oslomsg_rpc_vhost }}{% if glance_oslomsg_rpc_use_ssl | bool %}?ssl=1&ssl_version={{ glance_oslomsg_rpc_ssl_version }}&ssl_ca_file={{ glance_oslomsg_rpc_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
+transport_url = {{ glance_oslomsg_rpc_transport }}://{% for host in glance_oslomsg_rpc_servers.split(',') %}{{ glance_oslomsg_rpc_userid }}:{{ glance_oslomsg_rpc_password }}@{{ host }}:{{ glance_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ _glance_oslomsg_rpc_vhost_conf }}{% if glance_oslomsg_rpc_use_ssl | bool %}?ssl=1&ssl_version={{ glance_oslomsg_rpc_ssl_version }}&ssl_ca_file={{ glance_oslomsg_rpc_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 scrub_time = 43200
 
@@ -70,10 +70,17 @@ policy_file = {{ glance_policy_file }}
 policy_default_rule = {{ glance_policy_default_rule }}
 policy_dirs = {{ glance_policy_dirs }}
 
+{% if glance_oslomsg_rpc_transport == 'rabbit' %}
+[oslo_messaging_rabbit]
+rabbit_quorum_queue = {{ glance_oslomsg_rabbit_quorum_queues }}
+rabbit_quorum_delivery_limit = {{ glance_oslomsg_rabbit_quorum_delivery_limit }}
+rabbit_quorum_max_memory_bytes = {{ glance_oslomsg_rabbit_quorum_max_memory_bytes }}
+{% endif %}
+
 [oslo_messaging_notifications]
 topics = notifications
 driver = {{ (glance_ceilometer_enabled | bool) | ternary('messagingv2', 'noop') }}
-transport_url = {{ glance_oslomsg_notify_transport }}://{% for host in glance_oslomsg_notify_servers.split(',') %}{{ glance_oslomsg_notify_userid }}:{{ glance_oslomsg_notify_password }}@{{ host }}:{{ glance_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ glance_oslomsg_notify_vhost }}{% if glance_oslomsg_notify_use_ssl | bool %}?ssl=1&ssl_version={{ glance_oslomsg_notify_ssl_version }}&ssl_ca_file={{ glance_oslomsg_notify_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
+transport_url = {{ glance_oslomsg_notify_transport }}://{% for host in glance_oslomsg_notify_servers.split(',') %}{{ glance_oslomsg_notify_userid }}:{{ glance_oslomsg_notify_password }}@{{ host }}:{{ glance_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ _glance_oslomsg_notify_vhost_conf }}{% if glance_oslomsg_notify_use_ssl | bool %}?ssl=1&ssl_version={{ glance_oslomsg_notify_ssl_version }}&ssl_ca_file={{ glance_oslomsg_notify_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 [paste_deploy]
 flavor = {{ glance_flavor }}

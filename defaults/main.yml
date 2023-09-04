@@ -106,7 +106,13 @@ glance_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers | default('127.0.0.1') }}"
 glance_oslomsg_rpc_port: "{{ oslomsg_rpc_port | default('5672') }}"
 glance_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl | default(False) }}"
 glance_oslomsg_rpc_userid: glance
-glance_oslomsg_rpc_vhost: /glance
+# vhost name depends on value of oslomsg_rabbit_quorum_queues. In case quorum queues
+# are not used - vhost name will be prefixed with leading `/`.
+glance_oslomsg_rpc_vhost:
+  - name: /glance
+    state: "{{ glance_oslomsg_rabbit_quorum_queues | ternary('absent', 'present') }}"
+  - name: glance
+    state: "{{ glance_oslomsg_rabbit_quorum_queues | ternary('present', 'absent') }}"
 glance_oslomsg_rpc_ssl_version: "{{ oslomsg_rpc_ssl_version | default('TLSv1_2') }}"
 glance_oslomsg_rpc_ssl_ca_file: "{{ oslomsg_rpc_ssl_ca_file | default('') }}"
 
@@ -122,6 +128,11 @@ glance_oslomsg_notify_password: "{{ glance_oslomsg_rpc_password }}"
 glance_oslomsg_notify_vhost: "{{ glance_oslomsg_rpc_vhost }}"
 glance_oslomsg_notify_ssl_version: "{{ oslomsg_notify_ssl_version | default('TLSv1_2') }}"
 glance_oslomsg_notify_ssl_ca_file: "{{ oslomsg_notify_ssl_ca_file | default('') }}"
+
+## RabbitMQ integration
+glance_oslomsg_rabbit_quorum_queues: "{{ oslomsg_rabbit_quorum_queues | default(True) }}"
+glance_oslomsg_rabbit_quorum_delivery_limit: "{{ oslomsg_rabbit_quorum_delivery_limit | default(0) }}"
+glance_oslomsg_rabbit_quorum_max_memory_bytes: "{{ oslomsg_rabbit_quorum_max_memory_bytes | default(0) }}"
 
 ## (Qdrouterd) integration
 # TODO(ansmith): Change structure when more backends will be supported
