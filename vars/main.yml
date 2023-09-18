@@ -19,8 +19,16 @@ _glance_is_first_play_host: >-
       inventory_hostname == (groups[glance_services['glance-api']['group']] | intersect(ansible_play_hosts)) | first) | bool
   }}
 
-_glance_oslomsg_rpc_vhost_conf: "{{ (glance_oslomsg_rpc_vhost is string) | ternary(glance_oslomsg_rpc_vhost, glance_oslomsg_rpc_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first) }}"
-_glance_oslomsg_notify_vhost_conf: "{{ (glance_oslomsg_notify_vhost is string) | ternary(glance_oslomsg_notify_vhost, glance_oslomsg_notify_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first) }}"
+_glance_oslomsg_rpc_vhost_conf: >-
+  {{
+    (glance_oslomsg_rpc_vhost is string) | ternary(glance_oslomsg_rpc_vhost, glance_oslomsg_rpc_vhost | selectattr(
+      'state', 'eq', 'present') | map(attribute='name') | first)
+  }}
+_glance_oslomsg_notify_vhost_conf: >-
+  {{
+    (glance_oslomsg_notify_vhost is string) | ternary(glance_oslomsg_notify_vhost, glance_oslomsg_notify_vhost | selectattr(
+      'state', 'eq', 'present') | map(attribute='name') | first)
+  }}
 
 #
 # Compile a list of the services on a host based on whether
