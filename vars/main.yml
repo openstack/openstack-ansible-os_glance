@@ -79,8 +79,19 @@ glance_mount_points: |-
   {% endfor %}
   {{ mps }}
 
+_glance_rootwrap_conf_overrides:
+  DEFAULT:
+    exec_dirs: "{{ _glance_bin }},/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin"
+
 glance_core_files:
   - tmp_f: "/tmp/glance-api-paste.ini"
     target_f: "{{ glance_etc_dir }}/glance-api-paste.ini"
     config_overrides: "{{ glance_glance_api_paste_ini_overrides }}"
     config_type: "ini"
+  - tmp_f: "/tmp/rootwrap.conf"
+    target_f: "{{ glance_etc_dir }}/rootwrap.conf"
+    config_overrides: "{{ _glance_rootwrap_conf_overrides | combine(glance_rootwrap_conf_overrides, recursive=True) }}"
+    config_type: "ini"
+    owner: "root"
+    group: "{{ glance_system_group_name }}"
+    mode: "0640"
