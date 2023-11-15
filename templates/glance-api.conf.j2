@@ -28,7 +28,7 @@ image_cache_max_size = {{ glance_image_cache_max_size }}
 show_image_direct_url = {{ glance_show_image_direct_url }}
 show_multiple_locations = {{ glance_show_multiple_locations }}
 
-enabled_backends = {% for backend in glance_available_stores %}{{ ('name' in backend) | ternary(backend['name'], backend) }}:{{ ('type' in backend) | ternary(backend['type'], backend) }}{% if not loop.last %},{% endif %}{% endfor %}
+enabled_backends = {% for backend in glance_available_stores %}{{ backend['name'] }}:{{ backend['type'] }}{% if not loop.last %},{% endif %}{% endfor %}
 
 
 [task]
@@ -86,14 +86,14 @@ transport_url = {{ glance_oslomsg_notify_transport }}://{% for host in glance_os
 flavor = {{ glance_flavor }}
 
 [glance_store]
-default_backend = {{ glance_default_store }}
+default_backend = {{ (glance_default_store is string) | ternary(glance_default_store, glance_default_store['name']) }}
 
-{% if 'file' in glance_available_stores %}
+{% for backend in glance_available_stores %}
+{%   if backend['name'] == 'file' and backend['type'] == 'file' and 'config' not in backend %}
 [file]
 filesystem_store_datadir = {{ glance_system_user_home }}/{{ glance_images_local_directory }}/
-{% endif %}
 
-{% if 'swift' in glance_available_stores %}
+{%   elif backend['name'] == 'swift' and backend['type'] == 'swift' and 'config' not in backend %}
 [swift]
 swift_store_config_file = {{ glance_etc_dir }}/glance-swift-store.conf
 default_swift_reference = swift1
@@ -105,15 +105,22 @@ swift_store_large_object_size = {{ glance_swift_store_large_object_size }}
 swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_size }}
 swift_store_retry_get_count = 5
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
-{% endif %}
 
-{% if 'rbd' in glance_available_stores %}
+{%   elif backend['name'] == 'rbd' and backend['type'] == 'rbd' and 'config' not in backend %}
 [rbd]
 rbd_store_pool = {{ glance_rbd_store_pool }}
 rbd_store_user = {{ glance_rbd_store_user }}
 rbd_store_ceph_conf = /etc/ceph/ceph.conf
 rbd_store_chunk_size = {{ glance_rbd_store_chunk_size }}
-{% endif %}
+
+{%   else %}
+[{{ backend['name'] }}]
+{%     for key, value in backend.get('config', {}) %}
+{{ key }} = {{ value }}
+{%     endfor %}
+
+{%   endif  %}
+{% endfor %}
 
 [profiler]
 enabled = {{ glance_profiler_enabled }}

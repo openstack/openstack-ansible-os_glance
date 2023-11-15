@@ -78,18 +78,26 @@ glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
 # glance_system_user_uid: <UID>
 # glance_system_group_gid: <GID>
 
+# Variable can be either a string or a mapping. Valid keys are:
+#   name, type, config
 glance_default_store: file
 # For support of multiple backends provide `glance_additional_stores` in the format:
 # glance_additional_stores:
 #   - name: private_store
-#     type: http
+#     type: file
+#     config:
+#       filesystem_store_datadir: /private
 glance_additional_stores:
-  - http
-  - cinder
-glance_available_stores: "{{ [glance_default_store] + glance_additional_stores }}"
-glance_flavor: "{% if glance_default_store == 'rbd' %}keystone{% else %}keystone+cachemanagement{% endif %}"
-glance_show_image_direct_url: "{{ glance_default_store == 'rbd' }}"
-glance_show_multiple_locations: "{{ glance_default_store == 'rbd' }}"
+  - name: http
+    type: http
+  - name: cinder
+    type: cinder
+glance_available_stores: "{{ _glance_available_stores }}"
+glance_available_store_types: "{{ glance_available_stores | map(attribute='type') | list | unique }}"
+
+glance_flavor: "{% if 'rbd' in glance_available_store_types %}keystone{% else %}keystone+cachemanagement{% endif %}"
+glance_show_image_direct_url: "{{ 'rbd' in glance_available_store_types }}"
+glance_show_multiple_locations: "{{ 'rbd' in glance_available_store_types }}"
 
 glance_memcached_servers: "{{ memcached_servers }}"
 
@@ -283,7 +291,7 @@ glance_pip_packages:
   - python-swiftclient
   - systemd-python
   - warlock
-  - "{{ ('s3' in glance_available_stores) | ternary('boto3', '') }}"
+  - "{{ ('s3' in glance_available_store_types) | ternary('boto3', '') }}"
 
 # Specific pip packages provided by the user
 glance_user_pip_packages: []
@@ -296,7 +304,7 @@ glance_api_init_overrides: {}
 # With enabled uwsgi glance has broken functionality of
 # the interoperable import feature (and maybe smth else)
 # We don't use uwsgi if ceph is used to prevent chunking issues
-glance_use_uwsgi: "{{ ('ceph' not in glance_available_stores) }}"
+glance_use_uwsgi: "{{ ('rbd' not in glance_available_store_types) }}"
 
 ## Service Names
 glance_services:

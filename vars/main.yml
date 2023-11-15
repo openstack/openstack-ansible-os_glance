@@ -95,3 +95,14 @@ glance_core_files:
     owner: "root"
     group: "{{ glance_system_group_name }}"
     mode: "0640"
+
+_glance_available_stores: |-
+  {% set stores = [] %}
+  {% for store in ([glance_default_store] + glance_additional_stores) | unique %}
+  {%   if store is string %}
+  {%     set _ = stores.append({'name': store, 'type': store}) %}
+  {%   else %}
+  {%     set _ = stores.append(store) %}
+  {%   endif %}
+  {% endfor %}
+  {{ stores }}
