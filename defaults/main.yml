@@ -97,7 +97,7 @@ glance_available_store_types: "{{ glance_available_stores | map(attribute='type'
 
 glance_flavor: "{% if 'rbd' in glance_available_store_types %}keystone{% else %}keystone+cachemanagement{% endif %}"
 glance_show_image_direct_url: "{{ 'rbd' in glance_available_store_types }}"
-glance_show_multiple_locations: "{{ 'rbd' in glance_available_store_types }}"
+glance_show_multiple_locations: "{{ 'rbd' in glance_available_store_types or 'cinder' in glance_available_store_types }}"
 
 glance_memcached_servers: "{{ memcached_servers }}"
 
