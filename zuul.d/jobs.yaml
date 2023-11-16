@@ -13,19 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- project:
-    templates:
-      - check-requirements
-      - openstack-ansible-linters-jobs
-      - openstack-ansible-deploy-aio_metal-jobs
-      - openstack-ansible-deploy-nfs-jobs
-      - openstack-ansible-deploy-ceph-jobs
-      - openstack-ansible-deploy-aio_distro_metal-jobs
-      - publish-openstack-docs-pti
-      - build-release-notes-jobs-python3
-    check:
-      jobs:
-        - openstack-ansible-deploy-aio_metal_cinderstore-ubuntu-jammy
-    gate:
-      jobs:
-        - openstack-ansible-deploy-aio_metal_cinderstore-ubuntu-jammy
+- job:
+    name: openstack-ansible-deploy-aio_metal_cinderstore-ubuntu-jammy
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-jammy
