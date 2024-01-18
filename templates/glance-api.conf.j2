@@ -124,7 +124,7 @@ cinder_store_project_domain_name = {{ glance_service_project_domain_id }}
 
 {%   else %}
 [{{ backend['name'] }}]
-{%     for key, value in backend.get('config', {}) %}
+{%     for key, value in backend.get('config', {}).items() %}
 {{ key }} = {{ value }}
 {%     endfor %}
 
