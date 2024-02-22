@@ -77,6 +77,21 @@
   tags:
     - glance-policy-override
 
+- name: Implement property protection
+  openstack.config_template.config_template:
+    dest: "{{ glance_etc_dir }}/{{ glance_property_protection_file }}"
+    config_type: "ini"
+    owner: "root"
+    group: "{{ glance_system_group_name }}"
+    mode: "0640"
+    config_overrides: "{{ glance_property_protection_file_overrides }}"
+  when: glance_property_protection_file_overrides | length > 0
+  tags:
+    - glance-property-protection
+  notify:
+    - Restart glance services
+    - Restart uwsgi services
+
 - name: Deploy Glance image import configuration file
   template:
     src: "{{ glance_glance_image_import_conf_location }}"

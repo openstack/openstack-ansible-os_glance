@@ -29,6 +29,10 @@ show_multiple_locations = {{ glance_show_multiple_locations }}
 
 enabled_backends = {% for backend in glance_available_stores %}{{ backend['name'] }}:{{ backend['type'] }}{% if not loop.last %},{% endif %}{% endfor %}
 
+{% if glance_property_protection_file_overrides | length > 0 %}
+property_protection_file = {{ glance_property_protection_file }}
+property_protection_rule_format = {{ glance_property_protection_rule_format }}
+{% endif %}
 
 [task]
 task_executor = {{ glance_task_executor }}

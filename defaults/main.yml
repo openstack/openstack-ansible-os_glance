@@ -392,3 +392,20 @@ glance_pki_install_certificates:
 # Define user-provided SSL certificates
 # glance_user_ssl_cert: <path to cert on ansible deployment host>
 # glance_user_ssl_key: <path to cert on ansible deployment host>
+
+# Glance property protection
+glance_property_protection_file: "property-protection.conf"
+glance_property_protection_rule_format: roles
+# Expected dict structure example:
+# glance_property_protection_file_overrides:
+#   protected_property1:
+#     create: admin,member
+#     read: admin,member,reader
+#     update: admin
+#     delete: admin
+#   .*:
+#     create: admin,member
+#     read: admin,member,reader
+#     update: admin,member
+#     delete: admin,member
+glance_property_protection_file_overrides: {}
