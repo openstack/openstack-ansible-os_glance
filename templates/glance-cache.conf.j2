@@ -13,3 +13,4 @@ image_cache_stall_time = {{ glance_image_cache_stall_time }}
 image_cache_max_size = {{ glance_image_cache_max_size }}
 auth_url = {{ keystone_service_internalurl }}
 filesystem_store_datadir = {{ glance_system_user_home }}/images/
+worker_self_reference_url = {{ (glance_backend_ssl | ternary('https', 'http')) ~ '://' ~ glance_api_bind_address ~ ':' ~ glance_api_service_port }}

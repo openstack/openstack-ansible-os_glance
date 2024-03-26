@@ -12,6 +12,7 @@ http_keepalive = {{ glance_http_keepalive }}
 digest_algorithm = {{ glance_digest_algorithm }}
 backlog = 4096
 workers = {{ glance_api_workers | default(glance_api_threads) }}
+worker_self_reference_url = {{ (glance_backend_ssl | ternary('https', 'http')) ~ '://' ~ glance_api_bind_address ~ ':' ~ glance_api_service_port }}
 
 enable_v2_api = {{ glance_enable_v2_api | bool }}
 
