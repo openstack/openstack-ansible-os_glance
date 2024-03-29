@@ -145,7 +145,7 @@
     systemd_group_name: "{{ glance_system_group_name }}"
     systemd_tempd_prefix: openstack
     systemd_slice_name: glance
-    systemd_lock_path: /var/lock/glance
+    systemd_lock_path: /run/lock
     systemd_CPUAccounting: true
     systemd_BlockIOAccounting: true
     systemd_MemoryAccounting: true

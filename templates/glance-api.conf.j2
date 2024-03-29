@@ -116,6 +116,9 @@ enabled = {{ glance_profiler_enabled }}
 enable_proxy_headers_parsing = True
 {% endif %}
 
+[oslo_concurrency]
+lock_path = {{ glance_use_uwsgi | ternary('/run/lock/' ~ glance_services['glance-api']['service_name'] ~ '/uwsgi', '/run/lock/glance') }}
+
 {% if glance_cors_allowed_origin is not none %}
 [cors]
 allow_headers = origin,content-md5,x-image-meta-checksum,x-storage-token,accept-encoding,x-auth-token,x-identity-status,x-roles,x-service-catalog,x-user-id,x-tenant-id,x-openstack-request-id
