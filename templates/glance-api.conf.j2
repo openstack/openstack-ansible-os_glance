@@ -79,6 +79,9 @@ policy_dirs = {{ glance_policy_dirs }}
 {% if glance_oslomsg_rpc_transport == 'rabbit' %}
 [oslo_messaging_rabbit]
 rabbit_quorum_queue = {{ glance_oslomsg_rabbit_quorum_queues }}
+transient_quorum_queue = {{ glance_oslomsg_rabbit_transient_quorum_queues }}
+use_queue_manager = {{ glance_oslomsg_rabbit_queue_manager }}
+rabbit_stream_fanout = {{ glance_oslomsg_rabbit_stream_fanout }}
 rabbit_quorum_delivery_limit = {{ glance_oslomsg_rabbit_quorum_delivery_limit }}
 rabbit_quorum_max_memory_bytes = {{ glance_oslomsg_rabbit_quorum_max_memory_bytes }}
 {% endif %}
