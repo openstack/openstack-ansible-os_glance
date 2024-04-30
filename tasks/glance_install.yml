@@ -96,6 +96,7 @@
     - path: "{{ glance_etc_dir }}/rootwrap.d"
       owner: "root"
       group: "root"
+      mode: "0750"
     - path: "/var/cache/glance"
     - path: "{{ glance_system_user_home }}"
     - path: "{{ glance_system_user_home }}/cache"

@@ -152,7 +152,7 @@
     path: "{{ glance_etc_dir }}/rootwrap.d"
     owner: "root"
     group: "root"
-    mode: "0640"
+    mode: "u=rwX,g=rX,o="
     recurse: true
 
 - name: Run the systemd mount role
