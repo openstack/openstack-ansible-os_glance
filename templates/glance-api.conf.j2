@@ -16,7 +16,9 @@ worker_self_reference_url = {{ (glance_backend_ssl | ternary('https', 'http')) ~
 
 enable_v2_api = {{ glance_enable_v2_api | bool }}
 
+{% if glance_oslomsg_rpc_configure %}
 transport_url = {{ glance_oslomsg_rpc_transport }}://{% for host in glance_oslomsg_rpc_servers.split(',') %}{{ glance_oslomsg_rpc_userid }}:{{ glance_oslomsg_rpc_password }}@{{ host }}:{{ glance_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ _glance_oslomsg_rpc_vhost_conf }}{% if glance_oslomsg_rpc_use_ssl | bool %}?ssl=1&ssl_version={{ glance_oslomsg_rpc_ssl_version }}&ssl_ca_file={{ glance_oslomsg_rpc_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
+{% endif %}
 
 scrub_time = 43200
 
@@ -83,7 +85,7 @@ rabbit_quorum_max_memory_bytes = {{ glance_oslomsg_rabbit_quorum_max_memory_byte
 
 [oslo_messaging_notifications]
 topics = notifications
-driver = {{ (glance_ceilometer_enabled | bool) | ternary('messagingv2', 'noop') }}
+driver = {{ (glance_oslomsg_notify_configure | bool) | ternary('messagingv2', 'noop') }}
 transport_url = {{ glance_oslomsg_notify_transport }}://{% for host in glance_oslomsg_notify_servers.split(',') %}{{ glance_oslomsg_notify_userid }}:{{ glance_oslomsg_notify_password }}@{{ host }}:{{ glance_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ _glance_oslomsg_notify_vhost_conf }}{% if glance_oslomsg_notify_use_ssl | bool %}?ssl=1&ssl_version={{ glance_oslomsg_notify_ssl_version }}&ssl_ca_file={{ glance_oslomsg_notify_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 [paste_deploy]

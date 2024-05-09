@@ -81,12 +81,14 @@
     _oslomsg_rpc_vhost: "{{ glance_oslomsg_rpc_vhost }}"
     _oslomsg_rpc_transport: "{{ glance_oslomsg_rpc_transport }}"
     _oslomsg_rpc_policies: "{{ glance_oslomsg_rpc_policies }}"
+    _oslomsg_rpc_configure: "{{ glance_oslomsg_rpc_configure }}"
     _oslomsg_notify_setup_host: "{{ glance_oslomsg_notify_setup_host }}"
     _oslomsg_notify_userid: "{{ glance_oslomsg_notify_userid }}"
     _oslomsg_notify_password: "{{ glance_oslomsg_notify_password }}"
     _oslomsg_notify_vhost: "{{ glance_oslomsg_notify_vhost }}"
     _oslomsg_notify_transport: "{{ glance_oslomsg_notify_transport }}"
     _oslomsg_notify_policies: "{{ glance_oslomsg_notify_policies }}"
+    _oslomsg_notify_configure: "{{ glance_oslomsg_notify_configure }}"
   tags:
     - always
 
