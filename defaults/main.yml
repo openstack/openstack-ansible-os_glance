@@ -143,6 +143,9 @@ glance_oslomsg_notify_policies: []
 
 ## RabbitMQ integration
 glance_oslomsg_rabbit_quorum_queues: "{{ oslomsg_rabbit_quorum_queues | default(True) }}"
+glance_oslomsg_rabbit_transient_quorum_queues: "{{ oslomsg_rabbit_transient_quorum_queues | default(glance_oslomsg_rabbit_quorum_queues) }}"
+glance_oslomsg_rabbit_queue_manager: "{{ oslomsg_rabbit_queue_manager | default(glance_oslomsg_rabbit_quorum_queues) }}"
+glance_oslomsg_rabbit_stream_fanout: "{{ oslomsg_rabbit_stream_fanout | default(glance_oslomsg_rabbit_quorum_queues) }}"
 glance_oslomsg_rabbit_quorum_delivery_limit: "{{ oslomsg_rabbit_quorum_delivery_limit | default(0) }}"
 glance_oslomsg_rabbit_quorum_max_memory_bytes: "{{ oslomsg_rabbit_quorum_max_memory_bytes | default(0) }}"
 
