@@ -121,6 +121,7 @@
   import_tasks: glance_post_install.yml
   tags:
     - glance-config
+    - post-install
 
 - name: Importing glance_db_sync tasks
   import_tasks: glance_db_sync.yml
