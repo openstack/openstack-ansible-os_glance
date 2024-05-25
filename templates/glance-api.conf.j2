@@ -82,6 +82,9 @@ rabbit_quorum_queue = {{ glance_oslomsg_rabbit_quorum_queues }}
 rabbit_transient_quorum_queue = {{ glance_oslomsg_rabbit_transient_quorum_queues }}
 rabbit_qos_prefetch_count = {{ glance_oslomsg_rabbit_qos_prefetch_count }}
 use_queue_manager = {{ glance_oslomsg_rabbit_queue_manager }}
+{% if glance_oslomsg_rabbit_queue_manager %}
+hostname = {{ [ansible_facts['hostname'], glance_service_name] | join('-') }}
+{% endif %}
 rabbit_stream_fanout = {{ glance_oslomsg_rabbit_stream_fanout }}
 rabbit_quorum_delivery_limit = {{ glance_oslomsg_rabbit_quorum_delivery_limit }}
 rabbit_quorum_max_memory_bytes = {{ glance_oslomsg_rabbit_quorum_max_memory_bytes }}
