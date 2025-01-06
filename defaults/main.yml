@@ -150,10 +150,6 @@ glance_oslomsg_rabbit_queue_manager: "{{ oslomsg_rabbit_queue_manager | default(
 glance_oslomsg_rabbit_quorum_delivery_limit: "{{ oslomsg_rabbit_quorum_delivery_limit | default(0) }}"
 glance_oslomsg_rabbit_quorum_max_memory_bytes: "{{ oslomsg_rabbit_quorum_max_memory_bytes | default(0) }}"
 
-## (Qdrouterd) integration
-# TODO(ansmith): Change structure when more backends will be supported
-glance_oslomsg_amqp1_enabled: "{{ glance_oslomsg_rpc_transport == 'amqp' }}"
-
 ## Database info
 glance_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
 glance_db_setup_python_interpreter: >-
@@ -303,9 +299,6 @@ glance_pip_packages:
 
 # Specific pip packages provided by the user
 glance_user_pip_packages: []
-
-glance_optional_oslomsg_amqp1_pip_packages:
-  - oslo.messaging[amqp1]
 
 glance_api_init_overrides: {}
 

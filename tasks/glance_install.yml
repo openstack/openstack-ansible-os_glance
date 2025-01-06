@@ -129,10 +129,7 @@
     venv_install_destination_path: "{{ glance_bin | dirname }}"
     venv_install_distro_package_list: "{{ glance_distro_packages }}"
     venv_pip_install_args: "{{ glance_pip_install_args }}"
-    venv_pip_packages: >-
-      {{ glance_pip_packages |
-           union(glance_user_pip_packages) |
-             union(((glance_oslomsg_amqp1_enabled | bool) | ternary(glance_optional_oslomsg_amqp1_pip_packages, []))) }}
+    venv_pip_packages: "{{ glance_pip_packages | union(glance_user_pip_packages) }}"
     venv_facts_when_changed:
       - section: "glance"
         option: "venv_tag"

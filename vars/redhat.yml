@@ -28,9 +28,4 @@ glance_service_distro_packages:
   - openstack-glance
   - python3-systemd
 
-glance_oslomsg_amqp1_distro_packages:
-  - cyrus-sasl-lib
-  - cyrus-sasl-plain
-  - cyrus-sasl-md5
-
 glance_core_files: "{{ (glance_install_method == 'source') | ternary(_glance_core_files, []) }}"

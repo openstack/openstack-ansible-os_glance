@@ -32,8 +32,4 @@ glance_service_distro_packages:
   - python3-glance
   - python3-systemd
 
-glance_oslomsg_amqp1_distro_packages:
-  - libsasl2-modules
-  - sasl2-bin
-
 glance_core_files: "{{ _glance_core_files }}"
