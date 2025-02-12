@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Gather variables for each operating system
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -29,7 +29,7 @@
     - always
 
 - name: Fail if service was deployed using a different installation method
-  fail:
+  ansible.builtin.fail:
     msg: "Switching installation methods for OpenStack services is not supported"
   when:
     - ansible_local is defined
@@ -39,12 +39,12 @@
     - ansible_local.openstack_ansible.glance.install_method != glance_install_method
 
 - name: Gather variables for installation method
-  include_vars: "{{ glance_install_method }}_install.yml"
+  ansible.builtin.include_vars: "{{ glance_install_method }}_install.yml"
   tags:
     - always
 
 - name: Including osa.db_setup role
-  include_role:
+  ansible.builtin.include_role:
     name: openstack.osa.db_setup
     apply:
       tags:
@@ -66,7 +66,7 @@
     - always
 
 - name: Including osa.mq_setup role
-  include_role:
+  ansible.builtin.include_role:
     name: openstack.osa.mq_setup
     apply:
       tags:
@@ -93,12 +93,12 @@
     - always
 
 - name: Importing glance_install tasks
-  import_tasks: glance_install.yml
+  ansible.builtin.import_tasks: glance_install.yml
   tags:
     - glance-install
 
 - name: Create and install SSL certificates
-  include_role:
+  ansible.builtin.include_role:
     name: pki
     tasks_from: main_certs.yml
     apply:
@@ -118,20 +118,20 @@
     - always
 
 - name: Importing glance_post_install tasks
-  import_tasks: glance_post_install.yml
+  ansible.builtin.import_tasks: glance_post_install.yml
   tags:
     - glance-config
     - post-install
 
 - name: Importing glance_db_sync tasks
-  import_tasks: glance_db_sync.yml
+  ansible.builtin.import_tasks: glance_db_sync.yml
   when:
     - "_glance_is_first_play_host"
   tags:
     - glance-config
 
 - name: Including osa.service_setup role
-  include_role:
+  ansible.builtin.include_role:
     name: openstack.osa.service_setup
     apply:
       tags:
@@ -168,7 +168,7 @@
     - always
 
 - name: Import uwsgi role
-  import_role:
+  ansible.builtin.import_role:
     name: uwsgi
   vars:
     uwsgi_services: "{{ uwsgi_glance_services }}"
@@ -179,7 +179,7 @@
     - uwsgi
 
 - name: Import ceph_client role
-  import_role:
+  ansible.builtin.import_role:
     name: ceph_client
   vars:
     openstack_service_system_user: "{{ glance_system_user_name }}"
@@ -191,4 +191,4 @@
     - ceph
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers

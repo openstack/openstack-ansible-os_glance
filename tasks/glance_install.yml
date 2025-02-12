@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Record the installation method
-  ini_file:
+  community.general.ini_file:
     dest: "/etc/ansible/facts.d/openstack_ansible.fact"
     section: "glance"
     option: "install_method"
@@ -22,19 +22,19 @@
     mode: "0644"
 
 - name: Refresh local facts to ensure the glance section is present
-  setup:
+  ansible.builtin.setup:
     filter: ansible_local
     gather_subset: "!all"
 
 - name: Create the system group
-  group:
+  ansible.builtin.group:
     name: "{{ glance_system_group_name }}"
     gid: "{{ glance_system_group_gid | default(omit) }}"
     state: "present"
     system: "yes"
 
 - name: Create the glance system user
-  user:
+  ansible.builtin.user:
     name: "{{ glance_system_user_name }}"
     uid: "{{ glance_system_user_uid | default(omit) }}"
     group: "{{ glance_system_group_name }}"
@@ -51,12 +51,12 @@
 - name: Source config block
   block:
     - name: Stat config directory
-      stat:
+      ansible.builtin.stat:
         path: "{{ glance_etc_dir }}"
       register: glance_conf_dir_stat
 
     - name: Remove the config directory
-      file:
+      ansible.builtin.file:
         path: "{{ glance_etc_dir }}"
         state: absent
       when:
@@ -66,7 +66,7 @@
     - glance_install_method == 'source'
 
 - name: Create glance directories
-  file:
+  ansible.builtin.file:
     path: "{{ item.path | default(omit) }}"
     src: "{{ item.src | default(omit) }}"
     dest: "{{ item.dest | default(omit) }}"
@@ -107,7 +107,7 @@
       mode: "0755"
 
 - name: Install distro packages
-  package:
+  ansible.builtin.package:
     name: "{{ glance_package_list }}"
     state: "{{ glance_package_state }}"
     update_cache: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('yes', omit) }}"
@@ -120,7 +120,7 @@
     - "Restart glance services"
 
 - name: Install the python venv
-  import_role:
+  ansible.builtin.import_role:
     name: "python_venv_build"
   vars:
     venv_python_executable: "{{ glance_venv_python_executable }}"
@@ -137,7 +137,7 @@
   when: glance_install_method == 'source'
 
 - name: Run the systemd service role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_service
     apply:
       tags:

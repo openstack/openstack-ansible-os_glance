@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Stop services
-  service:
+  ansible.builtin.service:
     name: "{{ item.service_name }}"
     enabled: true
     state: "stopped"
@@ -31,7 +31,7 @@
     - "cert installed"
 
 - name: Start services
-  service:
+  ansible.builtin.service:
     name: "{{ item.service_name }}"
     enabled: true
     state: "started"

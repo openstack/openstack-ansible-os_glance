@@ -68,7 +68,7 @@
     - glance-policy-override
 
 - name: Remove legacy policy.yaml file
-  file:
+  ansible.builtin.file:
     path: "{{ glance_etc_dir }}/{{ glance_policy_file }}"
     state: absent
   when:
@@ -93,7 +93,7 @@
     - Restart uwsgi services
 
 - name: Deploy Glance image import configuration file
-  template:
+  ansible.builtin.template:
     src: "{{ glance_glance_image_import_conf_location }}"
     dest: "{{ glance_etc_dir }}/glance-image-import.conf"
     mode: "0640"
@@ -108,13 +108,13 @@
 #                  because we only want to copy the original files once. and we
 #                  don't want to need multiple tasks.
 - name: Preserve original configuration file(s)
-  command: "cp {{ item.target_f }} {{ item.target_f }}.original"
+  ansible.builtin.command: "cp {{ item.target_f }} {{ item.target_f }}.original"
   args:
     creates: "{{ item.target_f }}.original"
   with_items: "{{ glance_core_files }}"
 
 - name: Fetch override files
-  fetch:
+  ansible.builtin.fetch:
     src: "{{ item.target_f }}"
     dest: "{{ item.tmp_f }}"
     flat: true
@@ -138,7 +138,7 @@
     - Restart uwsgi services
 
 - name: Cleanup fetched temp files
-  file:
+  ansible.builtin.file:
     path: "{{ item.tmp_f }}"
     state: absent
   changed_when: false
@@ -148,7 +148,7 @@
 
 # NOTE(cloudnull): This will ensure strong permissions on all rootwrap files.
 - name: Set rootwrap.d permissions
-  file:
+  ansible.builtin.file:
     path: "{{ glance_etc_dir }}/rootwrap.d"
     owner: "root"
     group: "root"
@@ -156,7 +156,7 @@
     recurse: true
 
 - name: Run the systemd mount role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_mount
   vars:
     systemd_mounts:
@@ -183,7 +183,7 @@
     - glance-config
 
 - name: Create glance cache management cron jobs
-  cron:
+  ansible.builtin.cron:
     name: "{{ item.name }}"
     minute: "{{ 59 | random(seed=inventory_hostname, start=1) }}"
     day: "*"
@@ -200,7 +200,7 @@
   when: glance_flavor is search("cache")
 
 - name: Drop sudoers file
-  template:
+  ansible.builtin.template:
     src: "sudoers.j2"
     dest: "/etc/sudoers.d/{{ glance_system_user_name }}_sudoers"
     mode: "0440"
