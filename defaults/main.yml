@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## Verbosity Options
-debug: False
+debug: false
 
 # Set installation method
 glance_install_method: "{{ service_install_method | default('source') }}"
@@ -56,8 +56,8 @@ glance_etc_dir: "/etc/glance"
 # Enable/Disable Ceilometer
 glance_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
-glance_profiler_enabled: False
-glance_fatal_deprecations: False
+glance_profiler_enabled: false
+glance_fatal_deprecations: false
 
 ## System info
 glance_system_user_name: glance
@@ -102,12 +102,12 @@ glance_show_multiple_locations: "{{ 'rbd' in glance_available_store_types or 'ci
 glance_memcached_servers: "{{ memcached_servers }}"
 
 ## API options
-glance_enable_v2_api: True
+glance_enable_v2_api: true
 
 ## Oslo Messaging Info
 
 # RPC
-glance_oslomsg_rpc_configure: False
+glance_oslomsg_rpc_configure: false
 glance_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group | default('rabbitmq_all') }}"
 glance_oslomsg_rpc_setup_host: "{{ (glance_oslomsg_rpc_host_group in groups) | ternary(groups[glance_oslomsg_rpc_host_group][0], 'localhost') }}"
 glance_oslomsg_rpc_transport: "{{ oslomsg_rpc_transport | default('rabbit') }}"
@@ -203,7 +203,7 @@ glance_service_adminurl: "{{ glance_service_adminuri }}"
 
 ## Enable automatic parsing of X-Forwarded-Proto, etc. headers passed by the
 ## load balancer.
-glance_proxy_headers_parsing: True
+glance_proxy_headers_parsing: true
 
 ## Swift Options
 glance_swift_store_auth_address: "{{ keystone_service_internalurl }}"
@@ -240,13 +240,12 @@ glance_api_threads: >-
 
 glance_task_executor: taskflow
 glance_digest_algorithm: sha256
-glance_http_keepalive: True
+glance_http_keepalive: true
 
 ## Glance policy
 glance_policy_file: policy.yaml
 glance_policy_default_rule: default
 glance_policy_dirs: policy.d
-
 
 # Define nfs information to enable nfs shares as mounted directories for
 # glance. The ``glance_remote_client`` value is a list of dictionaries that must
@@ -273,7 +272,7 @@ glance_remote_client: "{{ glance_nfs_client | default([]) }}"
 ## Ceph rbd Options
 glance_ceph_client: glance
 glance_rbd_store_pool: images
-glance_rbd_store_user: '{{ glance_ceph_client }}'
+glance_rbd_store_user: "{{ glance_ceph_client }}"
 glance_rbd_store_chunk_size: 8
 
 glance_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
@@ -299,12 +298,11 @@ glance_pip_packages:
 
 # Specific pip packages provided by the user
 glance_user_pip_packages: []
-
 glance_api_init_overrides: {}
 
 # With enabled uwsgi glance has broken functionality of
 # the interoperable import feature (and maybe smth else)
-glance_use_uwsgi: True
+glance_use_uwsgi: true
 
 ## Service Names
 glance_services:
@@ -364,7 +362,7 @@ glance_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
 glance_pki_keys_path: "{{ glance_pki_dir ~ '/certs/private/' }}"
 glance_pki_certs_path: "{{ glance_pki_dir ~ '/certs/certs/' }}"
 glance_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
-glance_pki_regen_cert: ''
+glance_pki_regen_cert: ""
 glance_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
 glance_pki_certificates:
   - name: "glance_{{ ansible_facts['hostname'] }}"

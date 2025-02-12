@@ -15,12 +15,12 @@
 
 - name: Perform a Glance DB sync
   command: "{{ glance_bin }}/glance-manage db_sync"
-  become: yes
+  become: true
   become_user: "{{ glance_system_user_name }}"
   changed_when: false
 
 - name: Load glance metadata definitions
   command: "{{ glance_bin }}/glance-manage db_load_metadefs {{ glance_etc_dir }}/metadefs"
-  become: yes
+  become: true
   become_user: "{{ glance_system_user_name }}"
   changed_when: false

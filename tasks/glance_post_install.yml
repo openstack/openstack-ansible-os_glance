@@ -117,10 +117,10 @@
   fetch:
     src: "{{ item.target_f }}"
     dest: "{{ item.tmp_f }}"
-    flat: yes
+    flat: true
   changed_when: false
   run_once: true
-  check_mode: no
+  check_mode: false
   with_items: "{{ glance_core_files }}"
 
 - name: Copy common config
@@ -206,7 +206,7 @@
     mode: "0440"
     owner: "root"
     group: "root"
-    validate: '/usr/sbin/visudo -cf %s'
+    validate: "/usr/sbin/visudo -cf %s"
   tags:
     - sudoers
     - glance-sudoers
