@@ -1,17 +1,8 @@
 ========================
-Team and repository tags
+OpenStack-Ansible Glance
 ========================
 
-.. image:: https://governance.openstack.org/tc/badges/openstack-ansible-os_glance.svg
-    :target: https://governance.openstack.org/tc/reference/tags/index.html
-
-.. Change things from this point on
-
-========================
-OpenStack-Ansible glance
-========================
-
-This Ansible role installs and configures OpenStack glance api.
+This Ansible role installs and configures OpenStack Glance.
 
 Documentation for the project can be found at:
   https://docs.openstack.org/openstack-ansible-os_glance/latest/
