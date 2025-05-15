@@ -123,8 +123,12 @@
     - glance-config
     - post-install
 
-- name: Importing glance_db_sync tasks
-  ansible.builtin.import_tasks: glance_db_sync.yml
+- name: Including glance_db_sync tasks
+  ansible.builtin.include_tasks: glance_db_sync.yml
+  args:
+    apply:
+      tags:
+        - glance-config
   when:
     - "_glance_is_first_play_host"
   tags:
@@ -178,9 +182,12 @@
     - glance-config
     - uwsgi
 
-- name: Import ceph_client role
-  ansible.builtin.import_role:
+- name: Include ceph_client role
+  ansible.builtin.include_role:
     name: ceph_client
+    apply:
+      tags:
+        - ceph
   vars:
     openstack_service_system_user: "{{ glance_system_user_name }}"
     openstack_service_venv_bin: "{{ (glance_install_method == 'source') | ternary(glance_bin, '') }}"
