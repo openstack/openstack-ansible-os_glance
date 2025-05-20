@@ -313,7 +313,7 @@ glance_services:
     start_order: 1
     execstarts: "{{ glance_bin }}/glance-api"
     wsgi_app: "{{ glance_use_uwsgi }}"
-    wsgi_name: glance-wsgi-api
+    wsgi: "glance.wsgi.api:application"
     uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
     uwsgi_bind_address: "{{ glance_api_bind_address }}"
     uwsgi_port: "{{ glance_api_service_port }}"

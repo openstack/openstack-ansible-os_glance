@@ -56,7 +56,6 @@ uwsgi_glance_services: |-
          and ('wsgi_app' in value and value['wsgi_app']) %}
   {%     set _ = value.update(
            {
-             'wsgi_path':  glance_bin ~ '/' ~ value.wsgi_name,
              'wsgi_venv': ((glance_install_method == 'source') | ternary(glance_bin | dirname, None)),
              'uwsgi_uid': glance_system_user_name,
              'uwsgi_guid': glance_system_group_name,
