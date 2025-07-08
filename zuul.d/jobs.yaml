@@ -14,6 +14,6 @@
 # limitations under the License.
 
 - job:
-    name: openstack-ansible-deploy-aio_metal_cinderstore-ubuntu-jammy
+    name: openstack-ansible-deploy-aio_metal_cinderstore-ubuntu-noble
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
