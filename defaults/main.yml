@@ -205,6 +205,9 @@ glance_service_adminurl: "{{ glance_service_adminuri }}"
 ## load balancer.
 glance_proxy_headers_parsing: true
 
+# Enable/Disable barbican configurations
+glance_barbican_enabled: "{{ (groups['barbican_all'] is defined) and (groups['barbican_all'] | length > 0) }}"
+
 ## Swift Options
 glance_swift_store_auth_address: "{{ keystone_service_internalurl }}"
 glance_swift_store_auth_insecure: "{{ keystone_service_internaluri_insecure }}"

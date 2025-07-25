@@ -47,6 +47,19 @@ max_pool_size = {{ glance_db_max_pool_size }}
 pool_timeout = {{ glance_db_pool_timeout }}
 connection_recycle_time = {{ glance_db_connection_recycle_time }}
 
+{% if glance_barbican_enabled %}
+[barbican]
+auth_endpoint = {{ keystone_service_internaluri }}/v3
+barbican_endpoint_type = internal
+send_service_user_token = {{ glance_service_token_roles_required | bool }}
+
+[barbican_service_user]
+auth_section = keystone_authtoken
+
+[key_manager]
+backend = barbican
+{% endif %}
+
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 auth_type = {{ glance_keystone_auth_plugin }}
