@@ -63,6 +63,12 @@ uwsgi_glance_services: |-
              'uwsgi_threads': glance_wsgi_threads,
            }
          ) %}
+  {%     if value.get('wsgi_path', '') | length == 0 %}
+  {%        set _ = value.pop('wsgi_path', '') %}
+  {%     endif %}
+  {%     if value.get('wsgi', '') | length == 0 %}
+  {%        set _ = value.pop('wsgi', '') %}
+  {%     endif %}
   {%     set _ = services.update({key: value}) %}
   {%   endif %}
   {% endfor %}
