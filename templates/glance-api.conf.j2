@@ -128,7 +128,7 @@ rbd_store_chunk_size = {{ glance_rbd_store_chunk_size }}
 
 {%   elif backend['name'] == 'cinder' and backend['type'] == 'cinder' and 'config' not in backend %}
 [cinder]
-cinder_catalog_info = volumev3:cinderv3:internalURL
+cinder_catalog_info = block-storage:cinder:internalURL
 cinder_store_auth_address = {{ keystone_service_adminurl }}
 cinder_store_user_name = {{ glance_service_user_name }}
 cinder_store_password = {{ glance_service_password }}
