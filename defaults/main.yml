@@ -101,9 +101,6 @@ glance_show_multiple_locations: "{{ 'rbd' in glance_available_store_types or 'ci
 
 glance_memcached_servers: "{{ memcached_servers }}"
 
-## API options
-glance_enable_v2_api: true
-
 ## Oslo Messaging Info
 
 # RPC
