@@ -124,7 +124,7 @@ swift_store_container = {{ glance_swift_store_container }}
 swift_store_create_container_on_put = True
 swift_store_large_object_size = {{ glance_swift_store_large_object_size }}
 swift_store_large_object_chunk_size = {{ glance_swift_store_large_object_chunk_size }}
-swift_store_retry_get_count = 5
+swift_store_retry_get_count = 0
 swift_store_endpoint_type = {{ glance_swift_store_endpoint_type }}
 
 {%   elif backend['name'] == 'rbd' and backend['type'] == 'rbd' and 'config' not in backend %}
