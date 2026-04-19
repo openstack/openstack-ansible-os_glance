@@ -65,6 +65,9 @@ glance_system_group_name: glance
 glance_system_shell: /bin/false
 glance_system_comment: glance system user
 glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
+glance_system_slice_name: glance
+
+glance_lock_dir: "{{ openstack_lock_dir | default('/run/lock') }}"
 
 ## Manually specified nova UID/GID
 # Deployers can specify a UID for the glance user as well as the GID for the
@@ -299,10 +302,6 @@ glance_pip_packages:
 glance_user_pip_packages: []
 glance_api_init_overrides: {}
 
-# With enabled uwsgi glance has broken functionality of
-# the interoperable import feature (and maybe smth else)
-glance_use_uwsgi: true
-
 ## Service Names
 glance_services:
   glance-api:
@@ -311,7 +310,7 @@ glance_services:
     init_config_overrides: "{{ glance_api_init_overrides }}"
     start_order: 1
     execstarts: "{{ glance_bin }}/glance-api"
-    wsgi_app: "{{ glance_use_uwsgi }}"
+    wsgi_app: true
     wsgi_path: "{{ (glance_install_method == 'distro') | ternary('glance-wsgi-api', '') }}"
     wsgi: "{{ (glance_install_method == 'source') | ternary('glance.wsgi.api:application', '') }}"
     uwsgi_overrides: "{{ glance_api_uwsgi_ini_overrides }}"
@@ -349,8 +348,8 @@ glance_rootwrap_conf_overrides: {}
 ###
 
 # Define if communication between haproxy and service backends should be
-# encrypted with TLS(works only with uWSGI).
-glance_backend_ssl: "{{ glance_use_uwsgi | ternary(openstack_service_backend_ssl | default(False), False) }}"
+# encrypted
+glance_backend_ssl: "{{ openstack_service_backend_ssl | default(False) }}"
 
 # Storage location for SSL certificate authority
 glance_pki_dir: "{{ openstack_pki_dir | default('/etc/openstack_deploy/pki') }}"

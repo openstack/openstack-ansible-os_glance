@@ -162,7 +162,7 @@ enable_proxy_headers_parsing = True
 {% endif %}
 
 [oslo_concurrency]
-lock_path = {{ glance_use_uwsgi | ternary('/run/lock/' ~ glance_services['glance-api']['service_name'] ~ '/uwsgi', '/run/lock/glance') }}
+lock_path = {{ glance_lock_dir }}/{{ glance_system_slice_name }}
 
 {% if glance_cors_allowed_origin is not none %}
 [cors]

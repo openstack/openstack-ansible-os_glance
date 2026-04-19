@@ -147,8 +147,8 @@
     systemd_user_name: "{{ glance_system_user_name }}"
     systemd_group_name: "{{ glance_system_group_name }}"
     systemd_tempd_prefix: openstack
-    systemd_slice_name: glance
-    systemd_lock_dir: /run/lock
+    systemd_slice_name: "{{ glance_system_slice_name }}"
+    systemd_lock_dir: "{{ glance_lock_dir }}"
     systemd_service_cpu_accounting: true
     systemd_service_block_io_accounting: true
     systemd_service_memory_accounting: true
