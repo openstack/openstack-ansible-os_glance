@@ -50,7 +50,6 @@
       config_overrides: "{{ glance_glance_scheme_json_overrides }}"
       config_type: "json"
   notify:
-    - Restart glance services
     - Restart uwsgi services
 
 - name: Place policy.yaml file
@@ -77,7 +76,6 @@
   tags:
     - glance-property-protection
   notify:
-    - Restart glance services
     - Restart uwsgi services
 
 - name: Deploy Glance image import configuration file
@@ -89,7 +87,6 @@
     group: "{{ glance_system_group_name }}"
   when: glance_glance_image_import_conf_location is defined
   notify:
-    - Restart glance services
     - Restart uwsgi services
 
 # NOTE(cloudnull): This is using "cp" instead of copy with a remote_source
@@ -122,7 +119,6 @@
     config_type: "{{ item.config_type }}"
   with_items: "{{ glance_core_files }}"
   notify:
-    - Restart glance services
     - Restart uwsgi services
 
 - name: Cleanup fetched temp files

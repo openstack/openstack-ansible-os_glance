@@ -35,19 +35,6 @@ _glance_oslomsg_notify_vhost_conf: >-
 # the host is in the host group and the service is enabled.
 # The service list is provided in the defined start order.
 #
-filtered_glance_services: |-
-  {% set services = [] %}
-  {% for key, value in glance_services.items() %}
-  {%   if (value['group'] in group_names) and
-          (('condition' not in value) or
-           ('condition' in value and value['condition'])) and
-            not ('wsgi_app' in value and value['wsgi_app']) %}
-  {%     set _ = value.update({'service_key': key}) %}
-  {%     set _ = services.append(value) %}
-  {%   endif %}
-  {% endfor %}
-  {{ services | sort(attribute='start_order') }}
-
 uwsgi_glance_services: |-
   {% set services = {} %}
   {% for key, value in glance_services.items() %}
