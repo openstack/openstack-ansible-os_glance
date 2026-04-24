@@ -6,11 +6,6 @@ use_stderr = False
 debug = {{ debug }}
 use_journal = True
 fatal_deprecations = {{ glance_fatal_deprecations }}
-bind_host = {{ glance_api_bind_address }}
-bind_port = {{ glance_api_service_port }}
-http_keepalive = {{ glance_http_keepalive }}
-backlog = 4096
-workers = {{ glance_api_workers | default(glance_api_threads) }}
 worker_self_reference_url = {{ (glance_backend_ssl | ternary('https', 'http')) ~ '://' ~ glance_api_bind_address ~ ':' ~ glance_api_service_port }}
 
 {% if glance_oslomsg_rpc_configure %}
