@@ -117,7 +117,7 @@
   retries: 5
   delay: 2
   notify:
-    - "Restart glance services"
+    - "Restart uwsgi services"
 
 - name: Install the python venv
   ansible.builtin.import_role:
@@ -135,34 +135,3 @@
         option: "venv_tag"
         value: "{{ glance_venv_tag }}"
   when: glance_install_method == 'source'
-
-- name: Run the systemd service role
-  ansible.builtin.include_role:
-    name: systemd_service
-    apply:
-      tags:
-        - glance-config
-        - systemd-service
-  vars:
-    systemd_user_name: "{{ glance_system_user_name }}"
-    systemd_group_name: "{{ glance_system_group_name }}"
-    systemd_tempd_prefix: openstack
-    systemd_slice_name: "{{ glance_system_slice_name }}"
-    systemd_lock_dir: "{{ glance_lock_dir }}"
-    systemd_service_cpu_accounting: true
-    systemd_service_block_io_accounting: true
-    systemd_service_memory_accounting: true
-    systemd_service_tasks_accounting: true
-    systemd_services:
-      - service_name: "{{ service_var.service_name }}"
-        enabled: "{{ service_var.enabled | default(True) }}"
-        state: "{{ service_var.state | default('started') }}"
-        execstarts: "{{ service_var.execstarts }}"
-        execreloads: "{{ service_var.execreloads | default([]) }}"
-        config_overrides: "{{ service_var.init_config_overrides }}"
-  with_items: "{{ filtered_glance_services }}"
-  loop_control:
-    loop_var: service_var
-  tags:
-    - glance-config
-    - systemd-service

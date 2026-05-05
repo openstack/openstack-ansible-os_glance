@@ -65,7 +65,6 @@ glance_system_group_name: glance
 glance_system_shell: /bin/false
 glance_system_comment: glance system user
 glance_system_user_home: "/var/lib/{{ glance_system_user_name }}"
-glance_system_slice_name: glance
 
 glance_lock_dir: "{{ openstack_lock_dir | default('/run/lock') }}"
 
