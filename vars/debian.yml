@@ -17,9 +17,17 @@
 cache_timeout: 600
 
 # Common apt packages
+_glance_package_names_condition: >-
+  {{
+    (
+      (ansible_facts['distribution'] | lower == 'debian' and ansible_facts['distribution_major_version'] is version('14', '>=')) or
+        (ansible_facts['distribution'] | lower == 'ubuntu' and ansible_facts['distribution_version'] is version('26.04', '>='))
+    )
+  }}
+
 glance_distro_packages:
   - git
-  - libxml2
+  - "{{ _glance_package_names_condition | ternary('libxml2-16', 'libxml2') }}"
   - nfs-common
   - rpcbind
   - cron
