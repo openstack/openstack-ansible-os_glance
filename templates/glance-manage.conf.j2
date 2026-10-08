@@ -9,6 +9,11 @@ fatal_deprecations = {{ glance_fatal_deprecations }}
 
 [database]
 connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_address }}:{{ glance_galera_port }}/{{ glance_galera_database }}?charset=utf8{% if glance_galera_use_ssl | bool %}&ssl_verify_cert=true{% if glance_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ glance_galera_ssl_ca_cert }}{% endif %}{% endif +%}
+{% if glance_galera_readonly_connection_enabled | bool %}
+slave_connection = mysql+pymysql://{{ glance_galera_user }}:{{ glance_container_mysql_password }}@{{ glance_galera_readonly_address }}:{{ glance_galera_readonly_port }}/{{ glance_galera_database }}?charset=utf8{% if glance_galera_use_ssl | bool %}&ssl_verify_cert=true{% if glance_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ glance_galera_ssl_ca_cert }}{% endif %}{% endif +%}
+synchronous_reader = {{ glance_galera_synchronous_reader }}
+mysql_wsrep_sync_wait = {{ glance_galera_synchronous_reader | bool | ternary(0, 1) }}
+{% endif %}
 max_overflow = {{ glance_db_max_overflow }}
 max_pool_size = {{ glance_db_max_pool_size }}
 pool_timeout = {{ glance_db_pool_timeout }}
